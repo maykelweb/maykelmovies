@@ -93,51 +93,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body{ font: 14px sans-serif; }
-        .wrapper{ 
-            width: 360px;
-            padding: 20px;
-            border-radius: 3px;
-            background: #fff;
-            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-        }
-        .background {
-            width: 100%;
-            min-height: 100vh;
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -moz-box;
-            display: -ms-flexbox;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-            background: #0250c5;
-            background: -webkit-linear-gradient(bottom, #0250c5, #d43f8d);
-            background: -o-linear-gradient(bottom, #0250c5, #d43f8d);
-            background: -moz-linear-gradient(bottom, #0250c5, #d43f8d);
-            background: linear-gradient(bottom, #0250c5, #d43f8d);
-            position: relative;
-            z-index: 1;
-        }
-        .background::before {
-            content: "";
-            display: block;
-            position: absolute;
-            z-index: -1;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background-image: url('./images/login-background.png');
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
-        }
-    </style>
 </head>
 <body>
     <div class="background">
@@ -166,6 +123,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <input type="submit" class="btn btn-primary btn-block" value="Login">
                 </div>
                 <p class="text-center">Don't have an account? <a href="register.php">Sign up now</a>.</p>
+                <p class="text-center"><a href="index.php">Cancel</a></p>
             </form>
         </div>
     </div>
