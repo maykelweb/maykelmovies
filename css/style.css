@@ -1,7 +1,16 @@
+* {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
 body, html {
     padding: 0;
     margin: 0;
     font: 14px sans-serif;
+}
+
+/*Navbar */
+#mainNav {
+    background-color: #0250c5!important;
 }
 
 #mainNav a {
@@ -28,6 +37,23 @@ body, html {
 }
 .loginButton:hover::before {
     text-decoration: underline!important;
+}
+
+/* HOME PAGE */
+#search-container h4 {
+    font-size: 26px;
+    font-weight: bold;
+    text-align: center;
+}
+.search-box {
+    text-align: center;
+}
+.search-box input {
+    width: 250px;
+    height: 50px;
+    border-radius: 30px;
+    background-color: white;
+    border: 2px solid black;
 }
 
 /* Login Page */
@@ -72,8 +98,27 @@ body, html {
     background-size: cover;
     background-position: center;
 }
+/* Create Post */
+#createPost {
+    text-align: center;
+}
+#createPostButton {
+    font-size: 20px!important;
+}
 
-/* Bootstrap Rewrites */
-#mainNav {
-    background-color: #0250c5!important;
+#createPostForm {
+    display: none;
+    width: 500px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+/* Error notification */
+.notification {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    background: #41e441;
+    padding: 10px 20px;
 }

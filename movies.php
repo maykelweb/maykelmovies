@@ -1,9 +1,21 @@
 <?php
 // Initialize the session
-session_start();
+if (session_id() == "")
+  session_start();
+
+// Processing form data when post is submitted
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+  
+  // Validate title
+  if(empty(trim($_POST["title"]))){
+    $title_err = "Every post needs a title.";    
+  } else{
+    $title = trim($_POST["title"]);
+  }
+}
 ?>
  
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -44,8 +56,43 @@ session_start();
           </nav>
     </header>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-</body>
-</html>
+    <section>
+      <div id="createPost" class="mt-5">
+        <a id="createPostButton" class="btn btn-primary" onclick="showCreatePost()"> Create New Discussion </a>
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="createPostForm" method="post" style="display:none;" class="mt-3">
+          <div class="form-group">
+              <label>Title</label>
+              <input type="text" name="title" class="form-control <?php echo (!empty($title_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $title; ?>">
+              <span class="invalid-feedback"><?php echo $title_err; ?></span>
+          </div>    
+          <div class="form-group">
+              <label>Content</label>
+              <textarea type="textarea" name="content" rows="10" style="height:100%;" class="form-control <?php echo (!empty($content_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $content; ?>"></textarea>
+              <span class="invalid-feedback"><?php echo $content_err; ?></span>
+          </div>    
+          <div class="form-group">
+              <input type="submit" class="btn btn-primary btn-block" value="Submit">
+          </div>
+      </form>
+      </div>
+    </section>
+
+    <script>
+      function showCreatePost() {
+        const form = document.getElementById('createPostForm');
+
+        <?php if ($_SESSION["loggedin"] == true) { ?>
+          if (form.style.display == "none") {
+            form.style.display = "block";
+          } else {
+            form.style.display = "none";
+          }
+        <?php } else {
+          echo "not logged in";
+        } ?>
+      }
+    </script>
+
+<?php
+require_once("footer.php");
+?>
