@@ -113,6 +113,11 @@ body, html {
     text-align: left;
 }
 
+#posts {
+    color: black!important;
+    text-decoration: none!important;
+}
+
 /* Error notification */
 .notification {
     position: absolute;

@@ -120,10 +120,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <!-- Loop to display all movie posts -->
         <div id="moviePosts" class="mt-3">
           <?php
-            $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.id WHERE posts.topic = 1";
+            $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.topic = 1";
             $result = mysqli_query($link, $query) or die(mysqli_error($con));
             while ($row = mysqli_fetch_array($result, MYSQLI_BOTH)) {
                 echo '
+                <a id="posts" href="discuss.php?id='. $row['post_id'] .'">
                 <div class="card">
                   <div class="card-body">
                     <p class="card-subtitle float-right">'. $row['time_created'] .'</p>
@@ -132,6 +133,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <p class="card-text">'. $row['content'] .'</p>
                   </div>
                 </div>
+                </a>
                 ';
             }
           ?>
