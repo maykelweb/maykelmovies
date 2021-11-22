@@ -2,15 +2,29 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+/* Error notification */
+.notification {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    background: #41e441;
+    padding: 10px 20px;
+}
+
 body, html {
     padding: 0;
     margin: 0;
+    width: 100%;
     font: 14px sans-serif;
 }
 
 /*Navbar */
 #mainNav {
     background-color: #0250c5!important;
+}
+.color-primary {
+    color: #0250c5!important;
 }
 
 #mainNav a {
@@ -56,6 +70,78 @@ body, html {
     border: 2px solid black;
 }
 
+#search-container h1 {
+    font-family: Arial, Helvetica, sans-serif;
+}
+/*Banner*/
+.banner {
+    font-size: 2.5em;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Top Functions */
+#topFunctions .btn:hover {
+    background-color: #0250c5!important;
+}
+#topFunctions .btn {
+    background-color: #0250c5!important;
+    align-self: flex-end;
+    max-height: 33px;
+}
+
+/* Top Posts */
+#topPosts .posts h2 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#topPosts .posts {
+    border-color: none;
+    background-color: rgb(161, 214, 235, 0.2);
+}
+
+#topPosts .card-body {
+    padding: 1%!important;
+}
+
+/* Create Post */
+#createPost {
+    text-align: center;
+}
+#createPostButton {
+    font-size: 16px!important;
+    margin-bottom: 5px;
+}
+
+#createPostForm {
+    display: none;
+    width: 500px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+#posts {
+    color: black!important;
+    text-decoration: none!important;
+}
+
+.posts a {
+    color: black!important;
+    text-decoration: none!important;
+}
+
+.continue {
+    display: block;
+    text-align: center;
+    color: white !important;
+    margin: 0;
+    padding-bottom: 3px;
+    font-size: 1.4em;
+    background: #0250c5b0;
+    text-decoration: none!important;
+}
+
 /* Login Page */
 .wrapper{ 
     width: 360px;
@@ -97,33 +183,4 @@ body, html {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-}
-/* Create Post */
-#createPost {
-    text-align: center;
-}
-#createPostButton {
-    font-size: 20px!important;
-}
-
-#createPostForm {
-    display: none;
-    width: 500px;
-    margin: 0 auto;
-    text-align: left;
-}
-
-#posts {
-    color: black!important;
-    text-decoration: none!important;
-}
-
-/* Error notification */
-.notification {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 10;
-    background: #41e441;
-    padding: 10px 20px;
 }
