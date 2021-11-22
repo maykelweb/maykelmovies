@@ -122,7 +122,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <?php
             $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.topic = 1";
             $result = mysqli_query($link, $query) or die(mysqli_error($con));
-            while ($row = mysqli_fetch_array($result, MYSQLI_BOTH)) {
+            while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                 echo '
                 <a id="posts" href="discuss.php?id='. $row['post_id'] .'">
                 <div class="card">
