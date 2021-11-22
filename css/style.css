@@ -15,7 +15,6 @@
 body, html {
     padding: 0;
     margin: 0;
-    width: 100%;
     font: 14px sans-serif;
 }
 
@@ -140,6 +139,21 @@ body, html {
     font-size: 1.4em;
     background: #0250c5b0;
     text-decoration: none!important;
+}
+
+/* view Post */
+#thread {
+    margin-top: 100px;
+}
+
+#thread .posts h2 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#thread .posts {
+    border-color: none;
+    background-color: rgb(161, 214, 235, 0.2);
 }
 
 /* Login Page */
