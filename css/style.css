@@ -110,7 +110,6 @@ body, html {
 }
 #createPostButton {
     font-size: 16px!important;
-    margin-bottom: 5px;
 }
 
 #createPostForm {
@@ -142,18 +141,18 @@ body, html {
 }
 
 /* view Post */
-#thread {
+#post {
     margin-top: 100px;
 }
 
-#thread .posts h2 {
+#thread .posts h2, #post .posts h2 {
     font-size: 16px;
     font-weight: bold;
 }
 
-#thread .posts {
+.posts {
     border-color: none;
-    background-color: rgb(161, 214, 235, 0.2);
+    background-color: rgb(161, 214, 235, 0.2)!important;
 }
 
 /* Login Page */

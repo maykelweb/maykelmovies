@@ -34,7 +34,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         mysqli_stmt_bind_param($stmt, "ssii", $param_title, $param_content, $param_topic, $param_posted_by);
         
         // Set parameters
-        $param_title = $title;
+        $param_title = ucwords($title);
         $param_content = $content;
         $param_topic = 1;
         $param_posted_by = $_SESSION["id"];
@@ -99,7 +99,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <section>
       <div class="container">
         <div id="createPost" class="mt-5">
-          <a id="createPostButton" class="btn btn-primary" onclick="showCreatePost()"> Create New Discussion </a>
+          <a id="createPostButton" class="btn btn-primary float-right" onclick="showCreatePost()"> Create New Discussion </a>
+          <div style="clear:right;"></div>
           <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="createPostForm" method="post" style="display:none;" class="mt-3">
             <div class="form-group">
                 <label>Title</label>
@@ -118,19 +119,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </div>
 
         <!-- Loop to display all movie posts -->
-        <div id="moviePosts" class="mt-3">
+        <div id="moviePosts" class="mt-1">
           <?php
-            $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.topic = 1";
+            $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.topic = 1 ORDER BY posts.time_created DESC";
             $result = mysqli_query($link, $query) or die(mysqli_error($con));
             while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                 echo '
                 <a id="posts" href="discuss.php?id='. $row['post_id'] .'">
-                <div class="card">
+                <div class="card posts">
                   <div class="card-body">
                     <p class="card-subtitle float-right">'. $row['time_created'] .'</p>
                     <h2 class="card-title">'. $row['title'] .'</h2>
                     <p class="card-subtitle">By: '. $row['username'] .'</p>
-                    <p class="card-text">'. $row['content'] .'</p>
+                    <p class="card-text">'. mb_strimwidth($row['content'], 0, 130, "...") .'</p>
                   </div>
                 </div>
                 </a>

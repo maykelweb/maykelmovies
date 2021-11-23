@@ -84,7 +84,7 @@ require_once "config.php";
                 <p class="card-subtitle float-right">Posted: '. $row['time_created'] .'</p>
                 <div style="clear:right;"></div>
                 <p class="card-subtitle float-right font-italic"> '. $row['username'] .' </p>
-                <h2 class="card-title"> '. ucwords($row['title']) .'</h2>
+                <h2 class="card-title"> '. $row['title'] .'</h2>
                 <p class="card-text mt-3">'. $row['content'] .'</P>
           </div>
           </a>
