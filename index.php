@@ -1,6 +1,10 @@
 <?php
 // Initialize the session
 session_start();
+
+// Include config file
+require_once "config.php";
+
 ?>
  
  <!DOCTYPE html>
@@ -69,19 +73,18 @@ session_start();
       <div class="container">
 
       <?php
-        //Validate url ID
-        $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.post_id = users.user_id ORDER BY likes DESC LIMIT 3";
+        //Display Top 3 Posts
+        $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id ORDER BY likes DESC LIMIT 3";
         if ($result = mysqli_query($link, $query)) {
-          //Display Top 3 Post Information
           while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
             echo '
             <div class="card posts">
-            <a href="#">
+            <a href="discuss.php?id='. $row['post_id'] .'">
               <div class="card-body"> 
                 <p class="card-subtitle float-right">Posted: '. $row['time_created'] .'</p>
                 <div style="clear:right;"></div>
                 <p class="card-subtitle float-right font-italic"> '. $row['username'] .' </p>
-                <h2> '. $row['title'] .'</h2>
+                <h2 class="card-title"> '. ucwords($row['title']) .'</h2>
                 <p class="card-text mt-3">'. $row['content'] .'</P>
           </div>
           </a>
@@ -92,37 +95,14 @@ session_start();
         } else {
             echo '<div class="alert alert-danger"> Oops! Something went wrong. Please try again later. </div>';
         }        
-      ?>
-        
-        <div class="card posts">
-          <a href="#">
-          <div class="card-body"> 
-              <p class="card-subtitle float-right">Posted: an hour ago</p>
-              <div style="clear:right;"></div>
-              <p class="card-subtitle float-right font-italic"> Anonymousity2 </p>
-              <h2> Next by Nicholas Cage </h2>
-              <p class="card-text mt-3"> Lorem ipsum dolor sit amet consectetur adipisicing...</P>
-          </div>
-          </a>
-        </div>
-        <div class="card posts">
-          <a href="#">
-          <div class="card-body"> 
-              <p class="card-subtitle float-right">Posted: an hour ago</p>
-              <div style="clear:right;"></div>
-              <p class="card-subtitle float-right font-italic"> yourname </p>
-              <h2> Lock And Terrible Key </h2>
-              <p class="card-text mt-3"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad voluptate nisi fugit laboriosam atque pariatur beatae ullam officia unde facere, Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iste, dicta....</P>
-          </div>
-          </a>
-        </div>
+       ?>
         
         <a class="continue" href="#Action"> Continue Reading </a>
       </div>
     </section>
 
     <section id="Action">
-      <div class="containerr" style="height:100vh;width:100vw;">
+      <div style="height:100vh;">
 
       </div>
     </section>
