@@ -151,8 +151,13 @@ body, html {
 }
 
 .posts {
+    overflow: hidden;
     border-color: none;
     background-color: rgb(161, 214, 235, 0.2)!important;
+}
+
+.post-invalid {
+    font-size: 90%!important;
 }
 
 /* Login Page */

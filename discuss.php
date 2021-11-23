@@ -6,6 +6,8 @@ if (empty($_GET['id'])) {
     die();
 }
 
+$id = $_GET['id'];
+
 // Include config file
 require_once "config.php";
 
@@ -29,17 +31,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   if(empty($content_err)){
         
     // Prepare an insert statement
-    $sql = "INSERT INTO replies (title, content, topic, posted_by) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO replies (reply, reply_user, reply_post, parent_reply_id) VALUES (?, ?, ?, ?)";
 
     if($stmt = mysqli_prepare($link, $sql)) {
         // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "ssii", $param_title, $param_content, $param_topic, $param_posted_by);
+        mysqli_stmt_bind_param($stmt, "siii", $param_reply, $param_reply_user, $param_reply_post, $param_parent_reply_id);
         
         // Set parameters
-        $param_title = ucwords($title);
-        $param_content = $content;
-        $param_topic = 1;
-        $param_posted_by = $_SESSION["id"];
+        $param_reply = $content;
+        $param_reply_user = $_SESSION["id"];
+        $param_reply_post = $id;
+        $param_parent_reply_id = null;
         
         // Attempt to execute the prepared statement
         if(mysqli_stmt_execute($stmt)){
@@ -50,11 +52,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         // Close statement
         mysqli_stmt_close($stmt);
+        header( "Location: {$_SERVER['REQUEST_URI']}", true, 303 );
     }
   }
 
   // Close connection
-  mysqli_close($link);
   }
 }?>
  
@@ -123,13 +125,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $id = preg_replace('/[^0-9]/', '', $_GET['id']);
         $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.post_id = $id";
         if ($result = mysqli_query($link, $query)) {
-          //Check URL ID matches a post
-          if (mysqli_num_rows($result)==0) {
-            //No posts page
-            echo "such empty";
-          } else {
+          
             //Display Post Information
-            while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+            $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
             echo '
             <div class="card posts">
                 <div class="card-body"> 
@@ -140,8 +138,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 </div>
             </div>
             ';
-            }
-          }
+          
         //Error connecting to MySQL
         } else {
           echo '<div class="alert alert-danger"> Oops! Something went wrong. Please try again later. </div>';
@@ -153,8 +150,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <form action="" id="" method="post" class="mt-3">
             <div class="form-group">
               <label>Post a reply</label>
-              <textarea id="editor" type="textarea" name="reply" rows="10" style="height:100%;" class="form-control" value=""></textarea>
-              <span class="invalid-feedback"></span>
+              <textarea id="editor" type="textarea" name="reply" rows="10" style="height:100%;" class="form-control <?php echo (!empty($content_err)) ? 'is-invalid' : ''; ?>" value=""></textarea>
+              <span class="post-invalid invalid-feedback"><?php echo $content_err; ?></span>
             </div>    
             <div class="form-group">
               <input type="submit" class="btn btn-primary btn-block" value="Post">
@@ -177,37 +174,34 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     <section id="thread" class="mb-4">
         <div class="container">
-            <div class="card posts mt-4">
-                <div class="card-body"> 
-                    <p class="card-subtitle font-italic">by: moviecriticx</p>
-                    <p class="card-text mt-3"> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus animi quibusdam unde alias quaerat, magni quasi accusantium voluptatum a exercitationem distinctio fugiat, veniam officia qui excepturi. Cum, asperiores eligendi voluptates enim, inventore veniam nihil facere placeat doloremque dolorem itaque et voluptas nobis, commodi quos? Libero quis molestias temporibus consectetur ad?
-                    </P>
-                    <p class="card-subtitle float-right mt-3">Posted 11/11/2021 15:03pm</p>
+          <?php
+            $query = "SELECT * FROM replies LEFT JOIN users ON replies.reply_user = users.user_id WHERE replies.reply_post = $id";
+            if ($result = mysqli_query($link, $query)) {
+              if (mysqli_num_rows($result)==0) {
+              //No Replies
+            } else {
+              //Display Replies
+              while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+              echo '
+                <div class="card posts">
+                  <div class="card-body"> 
+                    <p class="card-subtitle font-italic">by: '. $row['username'] .'</p>
+                    <p class="card-text mt-3"> '. $row['reply'] .'</p>
+                    <p class="card-subtitle float-right mt-3">Posted '. $row['reply_time'] .'</p> 
                     <a href="">
-                        <span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>
+                      <span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>
                     </a>
+                  </div>
                 </div>
-            </div>
-            <div class="card posts ml-5">
-                <div class="card-body"> 
-                    <p class="card-subtitle font-italic">by: someone99</p>
-                    <p class="card-text mt-3"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde quibusdam maiores eligendi laborum libero dolorem officiis tempore placeat nihil voluptate!
-                    </P>
-                    <p class="card-subtitle float-right mt-3">Posted 11/11/2021 15:15pm</p> <a href="">
-                        <span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>
-                    </a>
-                </div>
-            </div>
-            <div class="card posts">
-                <div class="card-body"> 
-                    <p class="card-subtitle font-italic">by: slpaola</p>
-                    <p class="card-text mt-3"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit voluptate, atque ipsa eos ad iste sequi quisquam sint officiis fugit nisi id asperiores maiores quis perferendis temporibus quod sapiente sunt. Fugiat, ut! Necessitatibus, rem aliquam!
-                    </P>
-                    <p class="card-subtitle float-right mt-3">Posted 11/11/2021 16:01pm</p> <a href="">
-                        <span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>
-                    </a>
-                </div>
-            </div>
+              ';
+              }
+            }
+        
+            //Error connecting to MySQL
+            } else {
+              echo '<div class="alert alert-danger"> Oops! Something went wrong. Please try again later. </div>';
+            }
+          ?>
         </div>
     </section>
 
