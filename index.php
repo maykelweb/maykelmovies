@@ -69,7 +69,7 @@ require_once "config.php";
     </section>
 
     <!-- Top Posts -->
-    <section id="topPosts">
+    <section id="topPosts" class="mt-1">
       <div class="container">
 
       <?php
@@ -86,9 +86,9 @@ require_once "config.php";
                 <p class="card-subtitle float-right font-italic"> '. $row['username'] .' </p>
                 <h2 class="card-title"> '. $row['title'] .'</h2>
                 <p class="card-text mt-3">'. mb_strimwidth($row['content'], 0, 100, '...') .'</P>
-          </div>
-          </a>
-        </div>
+              </div>
+            </a>
+            </div>
             ';
           }
         //Error connecting to MySQL
