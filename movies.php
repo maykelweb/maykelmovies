@@ -48,11 +48,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         // Close statement
         mysqli_stmt_close($stmt);
+        header( "Location: {$_SERVER['REQUEST_URI']}", true, 303 );
     }
   }
-
-  // Close connection
-  mysqli_close($link);
 }?>
  
 <!DOCTYPE html>

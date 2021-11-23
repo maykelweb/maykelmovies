@@ -85,7 +85,7 @@ require_once "config.php";
                 <div style="clear:right;"></div>
                 <p class="card-subtitle float-right font-italic"> '. $row['username'] .' </p>
                 <h2 class="card-title"> '. $row['title'] .'</h2>
-                <p class="card-text mt-3">'. $row['content'] .'</P>
+                <p class="card-text mt-3">'. mb_strimwidth($row['content'], 0, 100, '...') .'</P>
           </div>
           </a>
         </div>
