@@ -1,47 +1,59 @@
 <?php
-// Initialize the session
-if (session_id() == "")
-  session_start();
+//Get page name to change active menu links and more
+$pageName = basename($_SERVER['PHP_SELF']);
+$metaDescription = "";
 
+switch ($pageName) {
+    case 'index.php':
+      $pageTitle = "Discussion on Movies, TV Shows, News and Reviews";
+      $metaDescription = "Discussion on movies, series and news within this community";
+    break;
+    case 'movies.php':
+      $pageTitle = "Movie Discussion";
+      $metaDescription = "Join the discussion about your favorite movie or clip";
+    break;
+    case 'series.php':
+      $pageTitle = "Series Discussion";
+      $metaDescription = "Have a discussion about your favorite show or join an interesting debate";
+    break;
+    case 'news.php':
+      $pageTitle = "News Discussion";
+      $metaDescription = "Keep up with discussion and interesting news in the entertainment industry";
+    break;
+    case 'reviews.php':
+      $pageTitle = "Read & Write Reviews";
+      $metaDescription = "Read some of the best user submitted reviews of movies, shows and entertainment or write your own!";
+    break;
+    default:
+    $pageTitle = "Discussion on Movies, TV Shows, News and Reviews";
+    $metaDescription = "Discussion on movies, series and news within this community";
+}
 ?>
-
-<!DOCTYPE html>
+ 
+ <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="<?php echo $metaDescription ?>">
+    <meta name="keywords" content="Discuss, Movies, Films, Series, TV Shows, Reviews">
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Movies</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tiny.cloud/1/rta56yptfl3ip9i4w8su10avcx96ai09g361no65l5y4r04r/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+        selector: 'textarea#editor',
+        height: 300,
+        plugins: [
+        'advlist autolink lists link image charmap print preview anchor',
+        'searchreplace visualblocks code fullscreen',
+        'insertdatetime media paste imagetools wordcount'
+        ],
+        toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+    });
+    </script>
+    <title> <?php echo $pageTitle ?> </title>
 </head>
-<body>
-    <header>
-        <nav id="mainNav" class="navbar navbar-expand-md navbar-dark p-4">
-            <a class="navbar-brand pr-4" href="index.php">MaykelMovies</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-          
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="index.php">Discuss <span></a>
-                </li>
-                <li class="nav-item active">
-                  <a class="nav-link" href="movies.php">Movies <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="series.php">Series</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="news.php">News</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="reviews.php">Reviews</a>
-                </li>
-              </ul>
-              <a href="login.php" class="btn btn-light loginButton">  Log In </a>
-            </div>
-          </nav>
-    </header>
