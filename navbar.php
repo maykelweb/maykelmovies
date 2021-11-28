@@ -23,7 +23,15 @@
                     <a class="nav-link" href="reviews.php">Reviews</a>
                 </li>
               </ul>
-              <a href="login.php" class="btn btn-light loginButton">  Log In </a>
+
+              <?php //Change login button depending on if user logged in
+                echo ($_SESSION['loggedin']) ? 
+              '<a href="profile.php" class="d-flex align-items-center">
+                <p class="navUsername"> Usario99 </p>
+                <div class="temporaryProfilePic"></div> 
+               </a>' : 
+              '<a href="login.php" class="btn btn-light loginButton">  Log In </a>'
+               ?>
             </div>
           </nav>
     </header>

@@ -75,7 +75,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     $login_err = "Invalid username or password.";
                 }
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                echo '<div class="alert alert-danger"> Oops! Something went wrong. Please try again later. </div>';
             }
 
             // Close statement
