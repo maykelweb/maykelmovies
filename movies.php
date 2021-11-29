@@ -96,7 +96,9 @@ require_once "header.php";
                   <div class="card-body">
                     <p class="card-subtitle float-right">'. $row['time_created'] .'</p>
                     <h2 class="card-title">'. $row['title'] .'</h2>
-                    <p class="card-subtitle">By: '. $row['username'] .'</p>
+                    <a href="profile.php?id='. $row['user_id'] .'">
+                      <p class="card-subtitle">By: '. $row['username'] .'</p>
+                    </a>
                     <p class="card-text">'. mb_strimwidth($row['content'], 0, 130, "...") .'</p>
                   </div>
                 </div>
@@ -105,16 +107,6 @@ require_once "header.php";
             }
           ?>
         </div>
-        <!-- Structure for posts
-          <div class="card">
-            <div class="card-body">
-              <p class="card-subtitle float-right">11/02/21 11:59pm</p>
-              <h2 class="card-title">Spiderman 2 </h2>
-              <p class="card-subtitle">By: spyderman99</p>
-              <p class="card-text">What do you all think of spiderman?</p>
-            </div>
-          </div>
-        -->
 
       </div>
     </section>

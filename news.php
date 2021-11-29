@@ -94,7 +94,9 @@ require_once "header.php";
                   <div class="card-body">
                     <p class="card-subtitle float-right">'. $row['time_created'] .'</p>
                     <h2 class="card-title">'. $row['title'] .'</h2>
-                    <p class="card-subtitle">By: '. $row['username'] .'</p>
+                    <a href="profile.php?id='. $row['user_id'] .'">
+                      <p class="card-subtitle">By: '. $row['username'] .'</p>
+                    </a>
                     <p class="card-text">'. mb_strimwidth($row['content'], 0, 130, "...") .'</p>
                   </div>
                 </div>

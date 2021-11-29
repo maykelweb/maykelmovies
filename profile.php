@@ -8,6 +8,11 @@ if (session_id() == "") {
 }
 $id = $_SESSION['id'];
 
+if (!empty($_GET['id'])) {
+    $id = preg_replace('/[^0-9]/', '', $_GET['id']);
+}
+
+
 //Get dynamic header
 require_once "header.php"; 
 ?>
