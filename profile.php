@@ -40,7 +40,7 @@ require_once "header.php";
 
             <!-- Profile Info -->
             <div class="row mt-3">
-                <div style="">
+                <div class="w-100">
 
                     <?php
                     $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.posted_by = $id ORDER BY posts.time_created DESC";
@@ -51,30 +51,16 @@ require_once "header.php";
                                 <div class="card posts">
                                     <div class="card-body">
                                         <p class="card-subtitle float-right">'. $row['time_created'] .'</p>
+                                        <div style="clear:right;"></div>
+                                        <p class="card-subtitle float-right font-italic">By: '. $row['username'] .'</p>
                                         <h2 class="card-title">'. $row['title'] .'</h2>
-                                        <p class="card-subtitle">By: '. $row['username'] .'</p>
                                         <p class="card-text">'. mb_strimwidth($row['content'], 0, 130, "...") .'</p>
                                     </div>
                                 </div>
                             </a>
                         ';
                     }
-                    ?>    
-
-
-                    <div class="card posts">
-                        <a href="#">
-                            <div class="card-body">
-                                <p class="card-subtitle float-right">Posted: an hour ago</p>
-                                <div style="clear:right;"></div>
-                                <p class="card-subtitle float-right font-italic"> yourname </p>
-                                <h2> Lock And Terrible Key </h2>
-                                <p class="card-text mt-3"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad
-                                    voluptate nisi fugit laboriosam atque pariatur beatae ullam officia unde facere,
-                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iste, dicta....</P>
-                            </div>
-                        </a>
-                    </div>
+                    ?>           
                 </div>
 
             </div>
