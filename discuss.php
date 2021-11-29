@@ -1,4 +1,12 @@
-<?php require_once "header.php"; ?>
+<?php 
+// Include config file
+require_once "config.php";
+
+// Initialize the session
+if (session_id() == "")
+  session_start();
+
+require_once "header.php"; ?>
 
 <body>
     <?php require_once "navbar.php" ?>
@@ -19,14 +27,15 @@
                 <div class="card-body"> 
                     <h1>'. $row['title'] .' </h1>
                     <p class="card-subtitle font-italic">by: '. $row['username'] .'</p>
-                    <p class="card-text mt-3">'. $row['content'] .'</P>
+                    <p class="card-text mt-3">'. $row['content'] .'</p>
                     <p class="card-subtitle float-right mt-3">Posted '. $row['time_created'] .'</h1>
                 </div>
             </div>
             ';
           
-        //Error connecting to MySQL
+        
         } else {
+          //Error connecting to MySQL
           echo '<div class="alert alert-danger"> Oops! Something went wrong. Please try again later. </div>';
         } ?>
 
@@ -82,9 +91,9 @@
               ';
               }
             }
-        
-            //Error connecting to MySQL
+            
             } else {
+              //Error connecting to MySQL
               echo '<div class="alert alert-danger"> Oops! Something went wrong. Please try again later. </div>';
             }
           ?>
