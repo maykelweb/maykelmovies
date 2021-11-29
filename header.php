@@ -24,6 +24,10 @@ switch ($pageName) {
       $pageTitle = "Read & Write Reviews";
       $metaDescription = "Read some of the best user submitted reviews of movies, shows and entertainment or write your own!";
     break;
+    case 'profile.php':
+      $pageTitle = "Profile Page";
+      $metaDescription = "Movie discussion site user profile page";
+    break;
     default:
     $pageTitle = "Discussion on Movies, TV Shows, News and Reviews";
     $metaDescription = "Discussion on movies, series and news within this community";
