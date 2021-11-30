@@ -27,7 +27,7 @@
               <?php //Change login button depending on if user logged in
                 echo ($_SESSION['loggedin']) ? 
               '<a href="profile.php" class="d-flex align-items-center">
-                <p class="navUsername"> Usario99 </p>
+                <p class="navUsername">'. $_SESSION['username'] .'</p>
                 <div class="temporaryProfilePic"></div> 
                </a>' : 
               '<a href="login.php" class="btn btn-light loginButton">  Log In </a>'
