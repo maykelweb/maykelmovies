@@ -1,6 +1,7 @@
 <?php 
 // Include config file
 require_once "config.php";
+require_once "displayPosts.php";
 
 // Initialize the session &
 if (session_id() == "") {
@@ -49,22 +50,7 @@ require_once "header.php";
 
                     <?php
                     $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.posted_by = $id ORDER BY posts.time_created DESC";
-                    $result = mysqli_query($link, $query);
-                    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                        echo '
-                            <a id="posts" href="discuss.php?id='. $row['post_id'] .'">
-                                <div class="card posts">
-                                    <div class="card-body">
-                                        <p class="card-subtitle float-right">'. $row['time_created'] .'</p>
-                                        <div style="clear:right;"></div>
-                                        <p class="card-subtitle float-right font-italic">By: '. $row['username'] .'</p>
-                                        <h2 class="card-title">'. $row['title'] .'</h2>
-                                        <p class="card-text">'. mb_strimwidth($row['content'], 0, 130, "...") .'</p>
-                                    </div>
-                                </div>
-                            </a>
-                        ';
-                    }
+                    displayPosts($query, $link);
                     ?>           
                 </div>
 

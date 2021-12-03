@@ -1,6 +1,7 @@
 <?php
 // Include config file
 require_once "config.php";
+require_once "displayPosts.php";
 
 // Initialize the session
 if (session_id() == "")
@@ -85,36 +86,12 @@ require_once "header.php";
         <!-- Loop to display all movie posts -->
         <div id="moviePosts" class="mt-1">
           <?php
+          
+            //Selecting all posts and users connected to those posts from database and ordering by time descending
             $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.topic = 3 ORDER BY posts.time_created DESC";
-            $result = mysqli_query($link, $query) or die(mysqli_error($con));
-            while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                echo '
-                <a id="posts" href="discuss.php?id='. $row['post_id'] .'">
-                <div class="card posts">
-                  <div class="card-body">
-                    <p class="card-subtitle float-right">'. $row['time_created'] .'</p>
-                    <h2 class="card-title">'. $row['title'] .'</h2>
-                    <a href="profile.php?id='. $row['user_id'] .'">
-                      <p class="card-subtitle">By: '. $row['username'] .'</p>
-                    </a>
-                    <p class="card-text">'. mb_strimwidth($row['content'], 0, 130, "...") .'</p>
-                  </div>
-                </div>
-                </a>
-                ';
-            }
+            displayPosts($query, $link);
           ?>
         </div>
-        <!-- Structure for posts
-          <div class="card">
-            <div class="card-body">
-              <p class="card-subtitle float-right">11/02/21 11:59pm</p>
-              <h2 class="card-title">Spiderman 2 </h2>
-              <p class="card-subtitle">By: spyderman99</p>
-              <p class="card-text">What do you all think of spiderman?</p>
-            </div>
-          </div>
-        -->
 
       </div>
     </section>
