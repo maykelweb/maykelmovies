@@ -87,22 +87,25 @@ require_once "header.php";
         <!-- Loop to display all movie posts -->
         <div id="moviePosts" class="mt-1">
           <?php
+          
+            //Selecting all posts and users connected to thos posts from database and ordering by time descending
             $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.topic = 1 ORDER BY posts.time_created DESC";
             $result = mysqli_query($link, $query);
+
+            //Creating a html echo of the results
             while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                 echo '
-                <a id="posts" href="discuss.php?id='. $row['post_id'] .'">
                 <div class="card posts">
-                  <div class="card-body">
-                    <p class="card-subtitle float-right">'. $row['time_created'] .'</p>
-                    <h2 class="card-title">'. $row['title'] .'</h2>
-                    <a href="profile.php?id='. $row['user_id'] .'">
-                      <p class="card-subtitle">By: '. $row['username'] .'</p>
-                    </a>
-                    <p class="card-text">'. mb_strimwidth($row['content'], 0, 130, "...") .'</p>
-                  </div>
+                  <a id="posts" href="discuss.php?id='. $row['post_id'] .'"></a>
+                    <div class="card-body">
+                      <p class="card-subtitle float-right">'. $row['time_created'] .'</p>
+                      <h2 class="card-title">'. $row['title'] .'</h2>
+                      <a class="user-link d-inline-block" href="profile.php?id='. $row['user_id'] .'">
+                        <p class="card-subtitle">By: '. $row['username'] .'</p>
+                      </a>
+                      <p class="card-text">'. mb_strimwidth($row['content'], 0, 130, "...") .'</p>
+                    </div>
                 </div>
-                </a>
                 ';
             }
           ?>
