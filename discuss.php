@@ -6,34 +6,45 @@ if (empty($_GET['id'])) {
     die();
 }
 
-$id = $_GET['id'];
-
 // Include config file
 require_once "config.php";
+
+// Define variables and initialize with empty values
+$content = $replyTo = "";
+$content_err = "";
+$id = $_GET['id'];
 
 // Initialize the session
 if (session_id() == "")
   session_start();
 
 // Processing form data when reply is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   //Check User is logged in to reply
   if ($_SESSION["loggedin"] == true) {
+
     //Validate content
-    if(empty(trim($_POST["reply"]))){
+    if (empty(trim($_POST["reply"]))){
       $content_err = "You must add content before you can submit post.";    
     } else {
       $content = trim($_POST["reply"]);
     }
 
+    //Check if user is replying to another user
+    if (empty(trim($_POST["replyTo"]))){
+      $replyTo = null;
+    } else {
+      $replyTo = trim($_POST["replyTo"]);
+    }
+
   // Check input errors before inserting in database
-  if(empty($content_err)){
+  if (empty($content_err)) {
         
     // Prepare an insert statement
     $sql = "INSERT INTO replies (reply, reply_user, reply_post, parent_reply_id) VALUES (?, ?, ?, ?)";
 
-    if($stmt = mysqli_prepare($link, $sql)) {
+    if ($stmt = mysqli_prepare($link, $sql)) {
         // Bind variables to the prepared statement as parameters
         mysqli_stmt_bind_param($stmt, "siii", $param_reply, $param_reply_user, $param_reply_post, $param_parent_reply_id);
         
@@ -41,7 +52,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $param_reply = $content;
         $param_reply_user = $_SESSION["id"];
         $param_reply_post = $id;
-        $param_parent_reply_id = null;
+        $param_parent_reply_id = $replyTo;
         
         // Attempt to execute the prepared statement
         if(mysqli_stmt_execute($stmt)){
@@ -99,7 +110,7 @@ require_once "header.php"; ?>
           <form action="" id="" method="post" class="mt-3">
             <div class="form-group">
               <label>Post a reply</label>
-              <textarea id="editor" type="textarea" name="reply" rows="10" style="height:100%;" class="form-control <?php echo (!empty($content_err)) ? 'is-invalid' : ''; ?>" value=""></textarea>
+              <textarea type="textarea" name="reply" rows="10" style="height:100%;" class="editor form-control <?php echo (!empty($content_err)) ? 'is-invalid' : ''; ?>" value=""></textarea>
               <span class="post-invalid invalid-feedback"><?php echo $content_err; ?></span>
             </div>    
             <div class="form-group">
@@ -141,7 +152,7 @@ require_once "header.php"; ?>
                     </a>
                     <p class="card-text mt-3"> '. $row['reply'] .'</p>
                     <p class="card-subtitle float-right mt-3">Posted '. $row['reply_time'] .'</p> 
-                    <a id="user'. $row['user_id'] .'" class="replyButton">
+                    <a id="u'. $row['reply_id'] .'" class="replyButton">
                       <span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>
                     </a>
                   </div>
@@ -157,12 +168,13 @@ require_once "header.php"; ?>
           ?>
 
           <!-- Reply Form -->
-          <form action="" id="" method="post" class="mt-3">
+          <form action="" id="replyForm" method="post" class="mt-3">
             <div class="form-group">
               <label>Post a reply</label>
-              <textarea id="editor" type="textarea" name="reply" rows="10" style="height:100%;" class="form-control <?php echo (!empty($content_err)) ? 'is-invalid' : ''; ?>" value=""></textarea>
+              <textarea type="textarea" name="reply" rows="10" style="height:100%;" class="editor form-control <?php echo (!empty($content_err)) ? 'is-invalid' : ''; ?>" value=""></textarea>
               <span class="post-invalid invalid-feedback"><?php echo $content_err; ?></span>
-            </div>    
+              <input type="hidden" id="replyTo" name="replyTo" value="">
+            </div>
             <div class="form-group">
               <input type="submit" class="btn btn-primary btn-block" value="Post">
             </div>
@@ -174,41 +186,24 @@ require_once "header.php"; ?>
       window.onload = () => {
         //Add onclick event for all reply buttons
         let replyButtons = document.querySelectorAll('.replyButton')
+        let form = document.getElementById('replyForm')
+        let formReply = document.getElementById('replyTo')
 
         for (var i = 0; i < replyButtons.length; i++) {
           replyButtons[i].addEventListener('click', (e) => {
             //Going back 3 elements to get parent div
             parentDiv = e.target.parentElement;
+            userID = parentDiv.id.substring(1); //Remove first U letter from ID
             for (var i = 0; i < 2; i++) {
               parentDiv = parentDiv.parentElement;
             }
             
-            /*Create form to insert
-            var replyForm = '
-            <form action="" id="" method="post" class="mt-3">' +
-            '<div class="form-group">' +
-              '<label>Post a reply</label>' +
-              '<textarea id="editor" type="textarea" name="reply" rows="10" style="height:100%;" class="form-control ' + '<' + '?php echo (!empty($content_err)) ? "is-invalid" : ""; ?>" value=""></textarea>' +
-              '<span class="post-invalid invalid-feedback">' + '<' + '?php echo $content_err; ?></span>' +
-            '</div>' + 
-            '<div class="form-group">' +
-              '<input type="submit" class="btn btn-primary btn-block" value="Post">' +
-            '</div>' +
-            '</form>';
-
-            var testForm = 
-            '<form action="" id="" method="post" class="mt-3">' +
-            '<div class="form-group">' +
-              '<label>Post a reply</label>' +
-              '<textarea id="editor" type="textarea" name="reply" rows="10" style="height:100%;" class="form-control"> </textarea>' + 
-            '</div>' +
-            '<div class="form-group">' +
-              '<input type="submit" class="btn btn-primary btn-block" value="Post">' +
-            '</div>' +
-            '</form>';
-            
-            parentDiv.insertAdjacentHTML('afterend', testForm);
-            */
+            //Show form and set reply value
+            formReply.value = userID;
+            form.style.cssText = parentDiv.style.cssText;
+            form.style.height = 'auto';
+            form.style.display = 'block';
+            form.scrollIntoView({behavior: 'smooth'});
           })
         }
       }
@@ -222,5 +217,12 @@ require_once("footer.php");
   #thread .container {
     display: flex;
     flex-direction: column;
+  }
+
+  #replyForm {
+    height: 0;
+    display:none;
+    
+    transition: height 2s ease-in;
   }
 </style>

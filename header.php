@@ -48,7 +48,7 @@ switch ($pageName) {
     <script src="https://cdn.tiny.cloud/1/rta56yptfl3ip9i4w8su10avcx96ai09g361no65l5y4r04r/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         tinymce.init({
-        selector: 'textarea#editor',
+        selector: 'textarea.editor',
         height: 300,
         plugins: [
         'advlist autolink lists link image charmap print preview anchor',

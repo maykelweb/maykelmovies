@@ -141,6 +141,7 @@ body, html {
 }
 
 .posts a {
+    cursor: pointer;
     color: black!important;
     text-decoration: none!important;
 }
