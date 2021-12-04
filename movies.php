@@ -65,30 +65,48 @@ require_once "header.php";
 
     <section>
       <div class="container">
+
+        <!-- Create Post Button -->
         <div id="createPost" class="mt-5">
-          <a id="createPostButton" class="btn btn-primary float-right" onclick="showCreatePost()"> Create New Discussion </a>
+          <button id="createPostButton" class="btn btn-primary float-right" data-toggle="modal" data-target="#newPost"> Create New Discussion </button>
           <div style="clear:right;"></div>
-          <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="createPostForm" method="post" style="display:none;" class="mt-3">
-            <div class="form-group">
-                <label>Title</label>
-                <input type="text" name="title" class="form-control <?php echo (!empty($title_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $title; ?>">
-                <span class="invalid-feedback"><?php echo $title_err; ?></span>
-            </div>    
-            <div class="form-group">
-                <label>Content</label>
-                <textarea type="textarea" name="content" rows="10" style="height:100%;" class="form-control <?php echo (!empty($content_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $content; ?>"></textarea>
-                <span class="invalid-feedback"><?php echo $content_err; ?></span>
-            </div>    
-            <div class="form-group">
-              <input type="submit" class="btn btn-primary btn-block" value="Submit">
+
+          <!-- Create Post Modal -->
+          <div class="modal fade" id="newPost" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Submit a post</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                 <!-- Create Post Form -->
+                  <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="createPostForm" method="post">
+                    <div class="form-group">
+                      <label>Title</label>
+                      <input type="text" name="title" class="form-control <?php echo (!empty($title_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $title; ?>">
+                      <span class="invalid-feedback"><?php echo $title_err; ?></span>
+                    </div>    
+                    <div class="form-group">
+                      <label>Content</label>
+                      <textarea type="textarea" name="content" rows="10" style="height:100%;" class="form-control <?php echo (!empty($content_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $content; ?>"></textarea>
+                      <span class="invalid-feedback"><?php echo $content_err; ?></span>
+                    </div>    
+                    <div class="form-group">
+                    <input type="submit" class="btn btn-primary btn-block" value="Post">
+                  </div>
+                </form>
+                </div>
+              </div>
             </div>
-          </form>
+          </div>
         </div>
 
         <!-- Loop to display all movie posts -->
         <div id="moviePosts" class="mt-1">
           <?php
-          
             //Selecting all posts and users connected to those posts from database and ordering by time descending
             $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.topic = 1 ORDER BY posts.time_created DESC";
             displayPosts($query, $link);
@@ -99,6 +117,8 @@ require_once "header.php";
     </section>
 
     <script>
+      window.onload () = ()
+
       function showCreatePost() {
         const form = document.getElementById('createPostForm');
 
