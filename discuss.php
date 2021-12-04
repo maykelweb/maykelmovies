@@ -169,33 +169,57 @@ require_once "header.php"; ?>
                   if (empty($row['parent_reply_id'])) { //Check post has no parent reply
                     echo '
                     <div class="card posts" style="order:'.$count.'">
-                    <div class="card-body"> 
-                      <a href="profile.php?id='. $row['user_id'] .'">
-                        <p class="card-subtitle font-italic">by: '. $row['username'] .'</p>
-                      </a>
-                      <p class="card-text mt-3"> '. $row['reply'] .'</p>
-                      <p class="card-subtitle float-right mt-3">Posted '. $row['reply_time'] .'</p> 
-                      <a id="u'. $row['reply_id'] .'" class="replyButton">
-                        <span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>
-                      </a>
+                      <div class="card-body"> 
+                        <a class="card-subtitle font-italic" href="profile.php?id='. $row['user_id'] .'"> by: '. $row['username'] .' </a>
+                        <p class="card-text mt-3"> '. $row['reply'] .'</p>
+                        <p class="card-subtitle float-right mt-3">Posted '. $row['reply_time'] .'</p> 
+                        <a id="u'. $row['reply_id'] .'" class="replyButton">
+                          <span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>
+                        </a>
 
-                      <!-- Debug -->
-                      <p> Reply ID: '. $row['reply_id'] .'</p>
-                      <p> Parent Reply ID: '. $row['parent_reply_id'] .'</p>
-                      <span type="hidden" id="reply_id" value="'. $row['reply_id'] .'">
-                    </div>
+                        <!-- Debug -->
+                        <p> Reply ID: '. $row['reply_id'] .'</p>
+                        <p> Parent Reply ID: '. $row['parent_reply_id'] .'</p>
+                        <span type="hidden" id="reply_id" value="'. $row['reply_id'] .'">
+                      </div>
                     </div>
                     ';  
                   //If has a parent reply, display indented below parent
                   } else {
                     ?>
                     <script>
-                      parentId = <?php echo $row['parent_reply_id']; ?>;
-                      posts = document.querySelectorAll('.posts');
-                      postsId = document.querySelectorAll('#reply_id');
-                      for (const post of postsId) {
-                        if (post.getAttribute("value") == parentId) {
-                          console.log("match");
+                      parentId = <?php echo $row['parent_reply_id']; ?>; //Parent Id for post being displayed
+                      postsId = document.querySelectorAll('#reply_id'); //Array of all posts id
+                      for (const postId of postsId) {
+                        //Check if parent id matches post id
+                        if (postId.getAttribute("value") == parentId) {
+                          post = postId.parentElement.parentElement; //Get parent card element
+
+                          //Create new card div
+                          var card = document.createElement('div'); 
+                          card.style.cssText = post.style.cssText; //Set same flex order as parent
+                          card.setAttribute('class', 'card posts'); //Set classes
+
+                          //Create card body
+                          var body = document.createElement('div'); 
+                          body.setAttribute('class', 'card-body');
+
+                          //Create anchor tag 
+                          var profileLink = document.createElement('a'); //Set as link to user id
+                          profileLink.setAttribute('href', 'profile.php?id= <?php $row['user_id'] ?>');
+                          profileLink.textContent = '<?php echo $row['username'] ?>';
+                          
+                          //Create P element with the reply
+                          var content = document.createElement('p');
+                          content.setAttribute('class', 'card-text mt-3'); //Set classes
+                          content.innerHTML = '<?php echo $row['reply'] ?>';
+                          
+
+                          //Append them all together
+                          body.append(profileLink);
+                          body.append(content);
+                          card.appendChild(body);
+                          post.after(card);
                         }
                       }
                     </script>
