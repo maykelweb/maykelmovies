@@ -10,9 +10,10 @@ if (empty($_GET['id'])) {
 require_once "config.php";
 
 // Define variables and initialize with empty values
+//Validate url ID
+$id = preg_replace('/[^0-9]/', '', $_GET['id']);
 $content = $replyTo = "";
 $content_err = "";
-$id = $_GET['id'];
 
 // Initialize the session
 if (session_id() == "")
@@ -78,31 +79,43 @@ require_once "header.php"; ?>
         <div class="container">
         <?php //Display posts by URL ID
 
-        //Validate url ID
-        $id = preg_replace('/[^0-9]/', '', $_GET['id']);
-        $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.post_id = $id";
-        if ($result = mysqli_query($link, $query)) {
-          
-            //Display Post Information
-            $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-            echo '
-            <div class="card posts">
-                <div class="card-body"> 
-                    <h1>'. $row['title'] .' </h1>
-                    <a href="profile.php?id='. $row['user_id'] .'">
-                      <p class="card-subtitle font-italic">by: '. $row['username'] .'</p>
-                    </a>
-                    <p class="card-text mt-3">'. $row['content'] .'</p>
-                    <p class="card-subtitle float-right mt-3">Posted '. $row['time_created'] .'</h1>
-                </div>
-            </div>
-            ';
-          
+        //Query to get all replies joined by users from database
+            $sql = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.post_id = ?";
         
-        } else {
-          //Error connecting to MySQL
-          echo '<div class="alert alert-danger"> Oops! Something went wrong. Please try again later. </div>';
-        } ?>
+            if ($stmt = mysqli_prepare($link, $sql)) {
+              // Bind variables to the prepared statement as parameters
+              mysqli_stmt_bind_param($stmt, "i", $param_id);
+            
+              // Set parameters
+              $param_id = $id;
+            
+              // Attempt to execute the prepared statement
+              if(mysqli_stmt_execute($stmt)){
+                $result = $stmt->get_result(); // get the mysqli result
+
+                //Display Replies
+                $row= $result->fetch_assoc(); // fetch data   
+                  echo '
+                  <div class="card posts">
+                      <div class="card-body"> 
+                          <h1>'. $row['title'] .' </h1>
+                          <a href="profile.php?id='. $row['user_id'] .'">
+                            <p class="card-subtitle font-italic">by: '. $row['username'] .'</p>
+                          </a>
+                          <p class="card-text mt-3">'. $row['content'] .'</p>
+                          <p class="card-subtitle float-right mt-3">Posted '. $row['time_created'] .'</h1>
+                      </div>
+                  </div>
+                  ';
+                
+              } else{
+                echo '<div class="alert alert-danger"> Oops! Something went wrong. Please try again later. </div>';
+              }
+
+            // Close statement
+            mysqli_stmt_close($stmt);
+            }
+        ?>
 
         <div>  
         <!-- Display reply form if user is logged in -->
@@ -180,7 +193,7 @@ require_once "header.php"; ?>
 
             // Close statement
             mysqli_stmt_close($stmt);
-          }
+            }
           ?>
 
           <!-- Reply Form -->
