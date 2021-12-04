@@ -136,35 +136,51 @@ require_once "header.php"; ?>
     <section id="thread" class="mb-4">
         <div class="container">
           <?php
-            $query = "SELECT * FROM replies LEFT JOIN users ON replies.reply_user = users.user_id WHERE replies.reply_post = $id";
-            if ($result = mysqli_query($link, $query)) {
-              if (mysqli_num_rows($result)==0) {
-              //No Replies
-            } else {
-              //Display Replies
-              $count = 0;
-              while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-              echo '
-                <div class="card posts" style="order:'.$count.'">
-                  <div class="card-body"> 
-                    <a href="profile.php?id='. $row['user_id'] .'">
-                      <p class="card-subtitle font-italic">by: '. $row['username'] .'</p>
-                    </a>
-                    <p class="card-text mt-3"> '. $row['reply'] .'</p>
-                    <p class="card-subtitle float-right mt-3">Posted '. $row['reply_time'] .'</p> 
-                    <a id="u'. $row['reply_id'] .'" class="replyButton">
-                      <span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>
-                    </a>
-                  </div>
-                </div>
-              '; $count++;
-              }
-            }
+            //Query to get all replies joined by users from database
+            $sql = "SELECT * FROM replies LEFT JOIN users ON replies.reply_user = users.user_id WHERE replies.reply_post = ? ORDER BY replies.parent_reply_id ASC";
+        
+            if ($stmt = mysqli_prepare($link, $sql)) {
+              // Bind variables to the prepared statement as parameters
+              mysqli_stmt_bind_param($stmt, "i", $param_id);
             
-            } else {
-              //Error connecting to MySQL
-              echo '<div class="alert alert-danger"> Oops! Something went wrong. Please try again later. </div>';
-            }
+              // Set parameters
+              $param_id = $id;
+            
+              // Attempt to execute the prepared statement
+              if(mysqli_stmt_execute($stmt)){
+                $result = $stmt->get_result(); // get the mysqli result
+
+                //Display Replies
+                $count = 0;
+                while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                echo '
+                  <div class="card posts" style="order:'.$count.'">
+                    <div class="card-body"> 
+                      <a href="profile.php?id='. $row['user_id'] .'">
+                        <p class="card-subtitle font-italic">by: '. $row['username'] .'</p>
+                      </a>
+                      <p class="card-text mt-3"> '. $row['reply'] .'</p>
+                      <p class="card-subtitle float-right mt-3">Posted '. $row['reply_time'] .'</p> 
+                      <a id="u'. $row['reply_id'] .'" class="replyButton">
+                        <span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>
+                      </a>
+
+                      <!-- Debug -->
+                      <p> Reply ID: '. $row['reply_id'] .'</p>
+                      <p> Parent Reply ID: '. $row['parent_reply_id'] .'</p>
+                    </div>
+                  </div>
+                '; 
+                
+                $count++;
+                }  
+              } else{
+                echo '<div class="alert alert-danger"> Oops! Something went wrong. Please try again later. </div>';
+              }
+
+            // Close statement
+            mysqli_stmt_close($stmt);
+          }
           ?>
 
           <!-- Reply Form -->

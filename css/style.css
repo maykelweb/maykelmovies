@@ -235,3 +235,8 @@ body, html {
     background-size: cover;
     background-position: center;
 }
+
+/* Hide branding on text editor */
+.tox-statusbar__branding {
+    display: none;
+}
