@@ -10,20 +10,16 @@ if (empty($_GET['id'])) {
 require_once "config.php";
 
 // Define variables and initialize with empty values
-//Validate url ID
-$id = preg_replace('/[^0-9]/', '', $_GET['id']);
 $content = $replyTo = "";
 $content_err = "";
+$id = preg_replace('/[^0-9]/', '', $_GET['id']); //Validate url ID
 
 // Initialize the session
 if (session_id() == "")
   session_start();
 
-// Processing form data when reply is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-  //Check User is logged in to reply
-  if ($_SESSION["loggedin"] == true) {
+// Processing form data when reply is submitted if user is logged in
+if ($_SERVER["REQUEST_METHOD"] == "POST" && $_SESSION["loggedin"] == true) {
 
     //Validate content
     if (empty(trim($_POST["reply"]))){
@@ -39,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $replyTo = trim($_POST["replyTo"]);
     }
 
-  // Check input errors before inserting in database
+  // Check content is not empty before inserting in database
   if (empty($content_err)) {
         
     // Prepare an insert statement
@@ -67,19 +63,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header( "Location: {$_SERVER['REQUEST_URI']}", true, 303 );
     }
   }
-
-  }
 }
 require_once "header.php"; ?>
 
 <body>
     <?php require_once "navbar.php" ?>
-
+    
+    <!-- Display Post Info -->
     <section id="post">
         <div class="container">
-        <?php //Display posts by URL ID
+        <?php
 
-        //Query to get all replies joined by users from database
+            //Query to get all replies joined by users from database
             $sql = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.post_id = ?";
         
             if ($stmt = mysqli_prepare($link, $sql)) {
@@ -145,7 +140,7 @@ require_once "header.php"; ?>
         </div>
     </section>
     
-    <!-- This is the replies part -->
+    <!-- Display Replies -->
     <section id="thread" class="mb-4">
         <div class="container">
           <?php
@@ -163,11 +158,17 @@ require_once "header.php"; ?>
               if(mysqli_stmt_execute($stmt)){
                 $result = $stmt->get_result(); // get the mysqli result
 
+                //Declaring empty js variables
+                ?><script>let parentId, postsId, posts;</script><?php 
+
                 //Display Replies
-                $count = 0;
+                $count = 0; //Count to display flex order
+
+                //Loop through all variables in SQL array
                 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                echo '
-                  <div class="card posts" style="order:'.$count.'">
+                  if (empty($row['parent_reply_id'])) { //Check post has no parent reply
+                    echo '
+                    <div class="card posts" style="order:'.$count.'">
                     <div class="card-body"> 
                       <a href="profile.php?id='. $row['user_id'] .'">
                         <p class="card-subtitle font-italic">by: '. $row['username'] .'</p>
@@ -181,10 +182,26 @@ require_once "header.php"; ?>
                       <!-- Debug -->
                       <p> Reply ID: '. $row['reply_id'] .'</p>
                       <p> Parent Reply ID: '. $row['parent_reply_id'] .'</p>
+                      <span type="hidden" id="reply_id" value="'. $row['reply_id'] .'">
                     </div>
-                  </div>
-                '; 
-                
+                    </div>
+                    ';  
+                  //If has a parent reply, display indented below parent
+                  } else {
+                    ?>
+                    <script>
+                      parentId = <?php echo $row['parent_reply_id']; ?>;
+                      posts = document.querySelectorAll('.posts');
+                      postsId = document.querySelectorAll('#reply_id');
+                      for (const post of postsId) {
+                        if (post.getAttribute("value") == parentId) {
+                          console.log("match");
+                        }
+                      }
+                    </script>
+                    <?php
+                  }
+
                 $count++;
                 }  
               } else{
