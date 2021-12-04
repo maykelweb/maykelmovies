@@ -198,27 +198,27 @@ require_once "header.php"; ?>
                           //Create new card div
                           var card = document.createElement('div'); 
                           card.style.cssText = post.style.cssText; //Set same flex order as parent
+                          let parentIndent = post.style.marginLeft.replace(/[^0-9]/g, '');
+                          
                           card.setAttribute('class', 'card posts'); //Set classes
+                          card.style.marginLeft = parentIndent + 3 + "%"; //Add indent to reply. +3% of previews parent indent
 
-                          //Create card body
-                          var body = document.createElement('div'); 
-                          body.setAttribute('class', 'card-body');
+                          //Create reply html for div
+                          card.innerHTML = 
+                            '<div class="card-body">' + 
+                              '<a class="card-subtitle font-italic" href="profile.php?id=<?php echo $row['user_id']?>"> by: <?php echo $row['username']?> </a>' +
+                              '<p class="card-text mt-3"> <?php echo $row['reply'] ?></p>' +
+                              '<p class="card-subtitle float-right mt-3">Posted <?php echo $row['reply_time'] ?></p>' +
+                              '<a id="u<?php echo $row['reply_id'] ?>" class="replyButton">' +
+                                '<span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>' +
+                              '</a>' +
 
-                          //Create anchor tag 
-                          var profileLink = document.createElement('a'); //Set as link to user id
-                          profileLink.setAttribute('href', 'profile.php?id= <?php $row['user_id'] ?>');
-                          profileLink.textContent = '<?php echo $row['username'] ?>';
-                          
-                          //Create P element with the reply
-                          var content = document.createElement('p');
-                          content.setAttribute('class', 'card-text mt-3'); //Set classes
-                          content.innerHTML = '<?php echo $row['reply'] ?>';
-                          
+                              '<!-- Debug -->' +
+                              '<p> Reply ID: <?php echo $row['reply_id'] ?></p>' +
+                              '<p> Parent Reply ID: <?php echo $row['parent_reply_id'] ?></p>' +
+                              '<span type="hidden" id="reply_id" value="<?php echo $row['reply_id'] ?>">' +
+                            '</div>'
 
-                          //Append them all together
-                          body.append(profileLink);
-                          body.append(content);
-                          card.appendChild(body);
                           post.after(card);
                         }
                       }
