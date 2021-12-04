@@ -198,9 +198,12 @@ require_once "header.php"; ?>
                           //Create new card div
                           var card = document.createElement('div'); 
                           card.style.cssText = post.style.cssText; //Set same flex order as parent
-                          let parentIndent = post.style.marginLeft.replace(/[^0-9]/g, '');
-                          
                           card.setAttribute('class', 'card posts'); //Set classes
+                          //set margin left to int and remove percentage mark
+                          let parentIndent = parseInt(post.style.marginLeft.replace(/[^0-9]/g, ''));
+                          if (isNaN(parentIndent)) {
+                            parentIndent = 0;
+                          }
                           card.style.marginLeft = parentIndent + 3 + "%"; //Add indent to reply. +3% of previews parent indent
 
                           //Create reply html for div
