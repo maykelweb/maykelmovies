@@ -70,13 +70,13 @@ require_once "header.php";
         <div id="createPost" class="mt-5">
           <button id="createPostButton" class="btn btn-primary float-right" data-toggle="modal" data-target="#newPost"> Create New Discussion </button>
           <div style="clear:right;"></div>
-
+          
           <!-- Create Post Modal -->
-          <div class="modal fade" id="newPost" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal fade" id="newPost" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Submit a post</h5>
+                  <h5 class="modal-title">Submit a post</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                   </button>
@@ -91,7 +91,7 @@ require_once "header.php";
                     </div>    
                     <div class="form-group">
                       <label>Content</label>
-                      <textarea type="textarea" name="content" rows="10" style="height:100%;" class="form-control <?php echo (!empty($content_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $content; ?>"></textarea>
+                      <textarea type="textarea" name="content" rows="10" style="height:100%;" class="form-control editor <?php echo (!empty($content_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $content; ?>"></textarea>
                       <span class="invalid-feedback"><?php echo $content_err; ?></span>
                     </div>    
                     <div class="form-group">

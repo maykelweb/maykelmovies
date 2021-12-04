@@ -133,6 +133,11 @@ body, html {
     text-align: left;
 }
 
+/* Post Form Modal */
+.modal-dialog {
+    max-width: 600px!important;
+}
+
 #posts {
     color: black!important;
     text-decoration: none!important;
