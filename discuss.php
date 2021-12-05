@@ -168,8 +168,10 @@ require_once "header.php"; ?>
                 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                   if (empty($row['parent_reply_id'])) { //Check post has no parent reply
                     echo '
-                    <div class="card posts" style="order:'.$count.'">
+                    <div class="post-container" style="order:'.$count.'">
+                    <div class="card posts">
                       <div class="card-body"> 
+                        <button onClick="togglePost(this)" class="float-right"> [ - ] </button>
                         <a class="card-subtitle font-italic" href="profile.php?id='. $row['user_id'] .'"> by: '. $row['username'] .' </a>
                         <p class="card-text mt-3"> '. $row['reply'] .'</p>
                         <p class="card-subtitle float-right mt-3">Posted '. $row['reply_time'] .'</p> 
@@ -183,6 +185,7 @@ require_once "header.php"; ?>
                         <span type="hidden" id="reply_id" value="'. $row['reply_id'] .'">
                       </div>
                     </div>
+                    </div>
                     ';  
                   //If has a parent reply, display indented below parent
                   } else {
@@ -193,22 +196,25 @@ require_once "header.php"; ?>
                       for (const postId of postsId) {
                         //Check if parent id matches post id
                         if (postId.getAttribute("value") == parentId) {
-                          post = postId.parentElement.parentElement; //Get parent card element
+                          post = postId.parentElement.parentElement.parentElement; //Get post-container div
 
                           //Create new card div
                           var card = document.createElement('div'); 
                           card.style.cssText = post.style.cssText; //Set same flex order as parent
-                          card.setAttribute('class', 'card posts'); //Set classes
-                          //set margin left to int and remove percentage mark
+                          card.setAttribute('class', 'post-container'); //Set classes
+
+                          //set margin left to integer  and remove percentage mark
                           let parentIndent = parseInt(post.style.marginLeft.replace(/[^0-9]/g, ''));
-                          if (isNaN(parentIndent)) {
+                          if (isNaN(parentIndent)) { //If no margin make it 0
                             parentIndent = 0;
                           }
-                          card.style.marginLeft = parentIndent + 3 + "%"; //Add indent to reply. +3% of previews parent indent
+                          card.style.marginLeft = "3%"; //Add +3% of previews parent indent to reply
 
                           //Create reply html for div
                           card.innerHTML = 
+                            '<div class="card posts">' +
                             '<div class="card-body">' + 
+                              '<button onClick="togglePost(this)" class="float-right"> [ - ] </button>' +
                               '<a class="card-subtitle font-italic" href="profile.php?id=<?php echo $row['user_id']?>"> by: <?php echo $row['username']?> </a>' +
                               '<p class="card-text mt-3"> <?php echo $row['reply'] ?></p>' +
                               '<p class="card-subtitle float-right mt-3">Posted <?php echo $row['reply_time'] ?></p>' +
@@ -220,9 +226,10 @@ require_once "header.php"; ?>
                               '<p> Reply ID: <?php echo $row['reply_id'] ?></p>' +
                               '<p> Parent Reply ID: <?php echo $row['parent_reply_id'] ?></p>' +
                               '<span type="hidden" id="reply_id" value="<?php echo $row['reply_id'] ?>">' +
+                            '</div>' +
                             '</div>'
 
-                          post.after(card);
+                          post.appendChild(card);
                         }
                       }
                     </script>
@@ -280,6 +287,18 @@ require_once "header.php"; ?>
           })
         }
       }
+    </script>
+    <script>
+      //Show / hide posts
+      function togglePost(e) {
+        let post = e.parentNode.parentNode.parentNode;
+
+        if (post.style.height != "20px") {
+          post.style.height = "20px";
+        } else {
+          post.style.height = "auto";
+        }
+    }
     </script>
 
 <?php
