@@ -163,7 +163,7 @@ require_once "header.php"; ?>
                 //Display Replies
                 $count = 0; //Count to display flex order
 
-                //Loop through all variables in SQL array
+                //Loop through all variables in SQL array and echo reply html
                 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                   if (empty($row['parent_reply_id'])) { //Check post has no parent reply
                     echo '
@@ -187,7 +187,8 @@ require_once "header.php"; ?>
                     </div>
                     </div>
                     ';  
-                  //If has a parent reply, display indented below parent
+
+                  //If reply has a parent reply, display indented below parent
                   } else {
                     ?>
                     <script>
@@ -226,7 +227,8 @@ require_once "header.php"; ?>
                               <?php } ?>
                             '</div>' +
                             '</div>'
-
+                          
+                          //Append reply html to parent post
                           post.appendChild(card);
                         }
                       }
@@ -234,8 +236,10 @@ require_once "header.php"; ?>
                     <?php
                   }
 
-                $count++;
+                $count++; //Increase count of flex order
                 }  
+              
+              //Problem connecting to mysql database
               } else{
                 echo '<div class="alert alert-danger"> Oops! Something went wrong. Please try again later. </div>';
               }
@@ -249,8 +253,10 @@ require_once "header.php"; ?>
           <!-- Reply Form  -->
           <form action="" id="replyForm" method="post" class="mt-3">
             <div class="form-group">
-              <label>Post a reply</label>
-              <button onclick="closeReplyForm()"> </button>
+              <div class="d-flex flex-row">
+                <label class="mt-auto">Post a reply</label>
+                <button id="closeReply" onclick="closeReplyForm()" type="button" title="close"> x </button>
+              </div>
               <textarea type="textarea" name="reply" rows="10" style="height:100%;" class="editor form-control <?php echo (!empty($content_err)) ? 'is-invalid' : ''; ?>" value=""></textarea>
               <span class="post-invalid invalid-feedback"><?php echo $content_err; ?></span>
               <input type="hidden" id="replyTo" name="replyTo" value="">

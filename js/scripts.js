@@ -28,3 +28,9 @@ function showReplyForm(e, username) {
     form.style.display = 'block';
     form.scrollIntoView({behavior: 'smooth'});
 }
+
+function closeReplyForm() {
+    let form = document.getElementById('replyForm');
+    form.style.height = 0;
+    form.style.display = 'none';
+}
