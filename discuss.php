@@ -171,17 +171,13 @@ require_once "header.php"; ?>
                     <div class="post-container" style="order:'.$count.'">
                     <div class="card posts">
                       <div class="card-body"> 
-                        <button onClick="togglePost(this)" class="float-right"> [ - ] </button>
+                        <button onClick="togglePost(this)" class="hide-post">  [ - ] </button>
                         <a class="card-subtitle font-italic" href="profile.php?id='. $row['user_id'] .'"> by: '. $row['username'] .' </a>
                         <p class="card-text mt-3"> '. $row['reply'] .'</p>
                         <p class="card-subtitle float-right mt-3">Posted '. $row['reply_time'] .'</p> 
-                        <a id="u'. $row['reply_id'] .'" class="replyButton">
+                        <a id="u'. $row['reply_id'] .'" class="replyButton" onclick="showReplyForm(this, \''. $row['username'] .'\')">
                           <span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>
                         </a>
-
-                        <!-- Debug -->
-                        <p> Reply ID: '. $row['reply_id'] .'</p>
-                        <p> Parent Reply ID: '. $row['parent_reply_id'] .'</p>
                         <span type="hidden" id="reply_id" value="'. $row['reply_id'] .'">
                       </div>
                     </div>
@@ -214,17 +210,13 @@ require_once "header.php"; ?>
                           card.innerHTML = 
                             '<div class="card posts">' +
                             '<div class="card-body">' + 
-                              '<button onClick="togglePost(this)" class="float-right"> [ - ] </button>' +
+                              '<button onClick="togglePost(this)" class="hide-post"> [ - ] </button>' +
                               '<a class="card-subtitle font-italic" href="profile.php?id=<?php echo $row['user_id']?>"> by: <?php echo $row['username']?> </a>' +
                               '<p class="card-text mt-3"> <?php echo $row['reply'] ?></p>' +
                               '<p class="card-subtitle float-right mt-3">Posted <?php echo $row['reply_time'] ?></p>' +
-                              '<a id="u<?php echo $row['reply_id'] ?>" class="replyButton">' +
+                              '<a id="u<?php echo $row['reply_id'] ?>" class="replyButton" onclick="showReplyForm(this, \'<?php echo $row['username']?>\')">' +
                                 '<span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>' +
                               '</a>' +
-
-                              '<!-- Debug -->' +
-                              '<p> Reply ID: <?php echo $row['reply_id'] ?></p>' +
-                              '<p> Parent Reply ID: <?php echo $row['parent_reply_id'] ?></p>' +
                               '<span type="hidden" id="reply_id" value="<?php echo $row['reply_id'] ?>">' +
                             '</div>' +
                             '</div>'
@@ -251,6 +243,7 @@ require_once "header.php"; ?>
           <form action="" id="replyForm" method="post" class="mt-3">
             <div class="form-group">
               <label>Post a reply</label>
+              <button onclick="closeReplyForm()"> </button>
               <textarea type="textarea" name="reply" rows="10" style="height:100%;" class="editor form-control <?php echo (!empty($content_err)) ? 'is-invalid' : ''; ?>" value=""></textarea>
               <span class="post-invalid invalid-feedback"><?php echo $content_err; ?></span>
               <input type="hidden" id="replyTo" name="replyTo" value="">
@@ -262,44 +255,6 @@ require_once "header.php"; ?>
         </div>
     </section>
 
-    <script>
-      window.onload = () => {
-        //Add onclick event for all reply buttons
-        let replyButtons = document.querySelectorAll('.replyButton')
-        let form = document.getElementById('replyForm')
-        let formReply = document.getElementById('replyTo')
-
-        for (var i = 0; i < replyButtons.length; i++) {
-          replyButtons[i].addEventListener('click', (e) => {
-            //Going back 3 elements to get parent div
-            parentDiv = e.target.parentElement;
-            userID = parentDiv.id.substring(1); //Remove first U letter from ID
-            for (var i = 0; i < 2; i++) {
-              parentDiv = parentDiv.parentElement;
-            }
-            
-            //Show form and set reply value
-            formReply.value = userID;
-            form.style.cssText = parentDiv.style.cssText;
-            form.style.height = 'auto';
-            form.style.display = 'block';
-            form.scrollIntoView({behavior: 'smooth'});
-          })
-        }
-      }
-    </script>
-    <script>
-      //Show / hide posts
-      function togglePost(e) {
-        let post = e.parentNode.parentNode.parentNode;
-
-        if (post.style.height != "20px") {
-          post.style.height = "20px";
-        } else {
-          post.style.height = "auto";
-        }
-    }
-    </script>
 
 <?php
 require_once("footer.php");

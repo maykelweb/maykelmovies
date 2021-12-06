@@ -197,6 +197,12 @@ body, html {
     font-size: 90%!important;
 }
 
+.hide-post {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
 /* Login Page */
 .wrapper{ 
     width: 360px;

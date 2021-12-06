@@ -46,6 +46,7 @@ switch ($pageName) {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.tiny.cloud/1/rta56yptfl3ip9i4w8su10avcx96ai09g361no65l5y4r04r/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="js/scripts.js"></script>
     <script>
         tinymce.init({
         selector: 'textarea.editor',
