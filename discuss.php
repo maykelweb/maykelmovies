@@ -112,8 +112,8 @@ require_once "header.php"; ?>
         ?>
 
         <div>  
-        <!-- Display reply form if user is logged in -->
         <?php if ($_SESSION["loggedin"] == true) { ?>
+        <!-- Display reply form if user is logged in -->
           <form action="" id="" method="post" class="mt-3">
             <div class="form-group">
               <label>Post a reply</label>
@@ -125,8 +125,8 @@ require_once "header.php"; ?>
             </div>
           </form>
           
-        <!-- Display log in/sign up button -->
         <?php } else { ?>
+          <!-- Display log in/sign up button -->
           <div class="mt-3">
             <a href="login.php" class="btn btn-primary">Log In</a>
             <a href="register.php" class="btn btn-primary">Sign Up</a>
@@ -268,6 +268,10 @@ require_once "header.php"; ?>
           <?php } ?>
         </div>
     </section>
+
+    <script>
+      //Load all session storage posts and set style to closed
+    </script>
 
 <?php
 require_once("footer.php");

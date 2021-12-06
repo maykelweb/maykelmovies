@@ -66,6 +66,7 @@ require_once "header.php";
     <section>
       <div class="container">
 
+        <?php if ($_SESSION["loggedin"] == true) { //If logged in, show create post button and form ?>
         <!-- Create Post Button -->
         <div id="createPost" class="mt-5">
           <button id="createPostButton" class="btn btn-primary float-right" data-toggle="modal" data-target="#newPost"> Create New Discussion </button>
@@ -95,14 +96,23 @@ require_once "header.php";
                       <span class="invalid-feedback"><?php echo $content_err; ?></span>
                     </div>    
                     <div class="form-group">
-                    <input type="submit" class="btn btn-primary btn-block" value="Post">
-                  </div>
-                </form>
+                      <input type="submit" class="btn btn-primary btn-block" value="Post">
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        <?php } else { //Display this is not logged in ?>
+          <!-- Display log in/sign up button -->
+          <div class="mt-3 text-right">
+            <p class="d-inline-block">Login or sign up to post </p>
+            <a href="login.php" class="btn btn-primary">Log In</a>
+            <a href="register.php" class="btn btn-primary">Sign Up</a>
+          </div>
+        <?php } ?>
 
         <!-- Loop to display all movie posts -->
         <div id="moviePosts" class="mt-1">
@@ -115,24 +125,6 @@ require_once "header.php";
 
       </div>
     </section>
-
-    <script>
-      window.onload () = ()
-
-      function showCreatePost() {
-        const form = document.getElementById('createPostForm');
-
-        <?php if ($_SESSION["loggedin"] == true) { ?>
-          if (form.style.display == "none") {
-            form.style.display = "block";
-          } else {
-            form.style.display = "none";
-          }
-        <?php } else {
-          echo "not logged in";
-        } ?>
-      }
-    </script>
 
 <?php
 require_once("footer.php");
