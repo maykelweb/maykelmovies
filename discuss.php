@@ -73,7 +73,6 @@ require_once "header.php"; ?>
     <section id="post">
         <div class="container">
         <?php
-
             //Query to get all replies joined by users from database
             $sql = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.post_id = ?";
         
@@ -174,11 +173,16 @@ require_once "header.php"; ?>
                         <button onClick="togglePost(this)" class="hide-post">  [ - ] </button>
                         <a class="card-subtitle font-italic" href="profile.php?id='. $row['user_id'] .'"> by: '. $row['username'] .' </a>
                         <p class="card-text mt-3"> '. $row['reply'] .'</p>
-                        <p class="card-subtitle float-right mt-3">Posted '. $row['reply_time'] .'</p> 
-                        <a id="u'. $row['reply_id'] .'" class="replyButton" onclick="showReplyForm(this, \''. $row['username'] .'\')">
-                          <span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>
-                        </a>
-                        <span type="hidden" id="reply_id" value="'. $row['reply_id'] .'">
+                        <p class="card-subtitle float-right mt-3">Posted '. $row['reply_time'] .'</p>';
+                        
+                        if ($_SESSION["loggedin"] == true) { //Only show reply button if logged in
+                          echo 
+                            '<a id="u'. $row['reply_id'] .'" class="replyButton" onclick="showReplyForm(this, \''. $row['username'] .'\')">
+                            <span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>
+                            </a>
+                            <span type="hidden" id="reply_id" value="'. $row['reply_id'] .'">';
+                        }
+                        echo '
                       </div>
                     </div>
                     </div>
@@ -214,10 +218,12 @@ require_once "header.php"; ?>
                               '<a class="card-subtitle font-italic" href="profile.php?id=<?php echo $row['user_id']?>"> by: <?php echo $row['username']?> </a>' +
                               '<p class="card-text mt-3"> <?php echo $row['reply'] ?></p>' +
                               '<p class="card-subtitle float-right mt-3">Posted <?php echo $row['reply_time'] ?></p>' +
+                              <?php if ($_SESSION["loggedin"] == true) { //Only show reply button if logged in ?>
                               '<a id="u<?php echo $row['reply_id'] ?>" class="replyButton" onclick="showReplyForm(this, \'<?php echo $row['username']?>\')">' +
                                 '<span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>' +
                               '</a>' +
                               '<span type="hidden" id="reply_id" value="<?php echo $row['reply_id'] ?>">' +
+                              <?php } ?>
                             '</div>' +
                             '</div>'
 
@@ -239,7 +245,8 @@ require_once "header.php"; ?>
             }
           ?>
 
-          <!-- Reply Form -->
+          <?php if ($_SESSION["loggedin"] == true) { //Only show form if logged in ?>
+          <!-- Reply Form  -->
           <form action="" id="replyForm" method="post" class="mt-3">
             <div class="form-group">
               <label>Post a reply</label>
@@ -252,6 +259,7 @@ require_once "header.php"; ?>
               <input type="submit" class="btn btn-primary btn-block" value="Post">
             </div>
           </form>
+          <?php } ?>
         </div>
     </section>
 
