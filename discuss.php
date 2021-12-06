@@ -170,7 +170,7 @@ require_once "header.php"; ?>
                     <div class="post-container" style="order:'.$count.'">
                     <div class="card posts">
                       <div class="card-body"> 
-                        <button onClick="togglePost(this)" class="hide-post">  [ - ] </button>
+                        <a onClick="togglePost(this)" class="hide-post">  [ - ] </a>
                         <a class="card-subtitle font-italic" href="profile.php?id='. $row['user_id'] .'"> by: '. $row['username'] .' </a>
                         <p class="card-text mt-3"> '. $row['reply'] .'</p>
                         <p class="card-subtitle float-right mt-3">Posted '. $row['reply_time'] .'</p>';
@@ -215,7 +215,7 @@ require_once "header.php"; ?>
                           card.innerHTML = 
                             '<div class="card posts">' +
                             '<div class="card-body">' + 
-                              '<button onClick="togglePost(this)" class="hide-post"> [ - ] </button>' +
+                              '<a onClick="togglePost(this)" class="hide-post"> [ - ] </a>' +
                               '<a class="card-subtitle font-italic" href="profile.php?id=<?php echo $row['user_id']?>"> by: <?php echo $row['username']?> </a>' +
                               '<p class="card-text mt-3"> <?php echo $row['reply'] ?></p>' +
                               '<p class="card-subtitle float-right mt-3">Posted <?php echo $row['reply_time'] ?></p>' +
@@ -268,7 +268,6 @@ require_once "header.php"; ?>
           <?php } ?>
         </div>
     </section>
-
 
 <?php
 require_once("footer.php");

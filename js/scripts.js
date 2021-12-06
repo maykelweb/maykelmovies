@@ -5,8 +5,12 @@ function togglePost(e) {
 
     if (post.style.height != "50px") {
       post.style.height = "50px";
+      e.textContent = "[ + ]";
+      e.style.fontSize = "0.86em";
     } else {
       post.style.height = "auto";
+      e.textContent = "[ - ]";
+      e.style.fontSize = "1em";
     }
 }
 
