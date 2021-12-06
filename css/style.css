@@ -203,6 +203,13 @@ body, html {
     top: 5px;
 }
 
+#replyForm {
+    height: 0;
+    display:none;
+    
+    transition: height 2s ease-in;
+}
+
 /* Login Page */
 .wrapper{ 
     width: 360px;

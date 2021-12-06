@@ -15,7 +15,7 @@ function showReplyForm(e, username) {
     let formReply = document.getElementById('replyTo')
 
     parentDiv = e.parentElement;
-    userID = parentDiv.id.substring(1); //Remove first U letter from ID
+    userID = e.id.substring(1); //Remove first U letter from ID
     for (var i = 0; i < 2; i++) { //Getting upmost parent container
         parentDiv = parentDiv.parentElement;
     }

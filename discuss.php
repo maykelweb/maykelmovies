@@ -142,7 +142,7 @@ require_once "header.php"; ?>
     
     <!-- Display Replies -->
     <section id="thread" class="mb-4">
-        <div class="container">
+        <div class="container d-flex flex-column">
           <?php
             //Query to get all replies joined by users from database
             $sql = "SELECT * FROM replies LEFT JOIN users ON replies.reply_user = users.user_id WHERE replies.reply_post = ? ORDER BY replies.parent_reply_id ASC";
@@ -259,17 +259,3 @@ require_once "header.php"; ?>
 <?php
 require_once("footer.php");
 ?>
-
-<style>
-  #thread .container {
-    display: flex;
-    flex-direction: column;
-  }
-
-  #replyForm {
-    height: 0;
-    display:none;
-    
-    transition: height 2s ease-in;
-  }
-</style>
