@@ -18,6 +18,14 @@ body, html {
     font: 14px sans-serif;
 }
 
+/* Increase display flex cross compatibility */
+.d-flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
 /*Navbar */
 #mainNav {
     background-color: #0250c5!important;
