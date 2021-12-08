@@ -28,7 +28,7 @@
                 echo ($_SESSION['loggedin']) ? 
               '<a href="profile.php" class="d-flex align-items-center">
                 <p class="navUsername">'. $_SESSION['username'] .'</p>
-                <div class="temporaryProfilePic"></div> 
+                <img class="temporaryProfilePic" src="uploads/u'. $_SESSION['id'] .'.jpg"></img> 
                </a>' : 
               '<a href="login.php" class="btn btn-light loginButton">  Log In </a>'
                ?>
