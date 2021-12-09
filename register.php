@@ -105,12 +105,38 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sss", $param_username, $param_password, $param_email);
+            mysqli_stmt_bind_param($stmt, "ssss", $param_username, $param_password, $param_email, $param_hash);
+            
+            $hash = md5( rand(0,1000) ); // Generate random 32 character hash and assign it to a local variable.
+            // Example output: f4552671f8909587cf485ea990207f3b
             
             // Set parameters
             $param_username = $username;
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
             $param_email = $email;
+            $param_hash = $hash;
+
+            //Send confirmation email
+            $asterisk = str_repeat("*", strlen($password)); //Replace password with asterisks
+            $to      = $email; // Send email to our user
+            $subject = 'Signup | Verification'; // Give the email a subject 
+            $message = '
+            
+            Thanks for signing up!
+            Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.
+  
+            ------------------------
+            Username: '.$username.'
+            Password: '.$asterisk.'
+            ------------------------
+  
+            Please click this link to activate your account:
+            http://www.maykelmovies.xyz/verify.php?email='.$email.'&hash='.$hash.'
+  
+            '; // Our message above including the link
+                      
+            $headers = 'From:confirmations@maykelmovies.xyz' . "\r\n"; // Set from headers
+            mail($to, $subject, $message, $headers); // Send our email
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
