@@ -117,7 +117,7 @@ require_once "header.php"; ?>
         <div>  
         <?php if ($_SESSION["loggedin"] == true) { ?>
         <!-- Display reply form if user is logged in -->
-          <form action="" id="" method="post" class="mt-3">
+          <form action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI'])?>" id="" method="post" class="mt-3">
             <div class="form-group">
               <label>Post a reply</label>
               <textarea type="textarea" name="reply" rows="10" style="height:100%;" class="editor form-control <?php echo (!empty($content_err)) ? 'is-invalid' : ''; ?>" value=""></textarea>
@@ -264,7 +264,7 @@ require_once "header.php"; ?>
 
           <?php if ($_SESSION["loggedin"] == true) { //Only show form if logged in ?>
           <!-- Reply Form  -->
-          <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="replyForm" method="post" class="mt-3">
+          <form action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']) ?>" id="replyForm" method="post" class="mt-3">
             <div class="form-group">
               <div class="d-flex flex-row">
                 <label class="mt-auto">Post a reply</label>
