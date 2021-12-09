@@ -1,5 +1,5 @@
 * {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: helvetica;
 }
 
 /* Error notification */
@@ -29,6 +29,10 @@ body, html {
 /*Navbar */
 #mainNav {
     background-color: #0250c5!important;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.bgcolour-primary {
+    background-color: #00388c !important
 }
 .color-primary {
     color: #0250c5!important;
@@ -182,7 +186,7 @@ body, html {
     text-decoration: none!important;
 }
 
-/* view Post */
+/* Discuss.php single page post */
 .post-container {
     overflow: hidden;
 }
@@ -191,15 +195,33 @@ body, html {
     margin-top: 100px;
 }
 
+.posts {
+    overflow: hidden;
+    border-color: none;
+    font-family: helvetica;
+    background-color: rgb(161, 214, 235, 0.2)!important;
+}
+
+.post-username {
+    font-size: 1.2em;
+}
+
+.post-time { 
+    font-size: 0.9em;
+}
+
+#post .card-text {
+    font-size: 1.2em;
+    font-family: helvetica;
+}
+
 #thread .posts h2, #post .posts h2 {
     font-size: 16px;
     font-weight: bold;
 }
 
-.posts {
-    overflow: hidden;
-    border-color: none;
-    background-color: rgb(161, 214, 235, 0.2)!important;
+#thread .posts {
+    font-size:1.2em;
 }
 
 .post-invalid {
@@ -223,6 +245,11 @@ body, html {
     display:none;
     
     transition: height 2s ease-in;
+}
+
+.replyButton i {
+    -webkit-text-stroke: 1px black;
+    color: white;
 }
 
 #closeReply {

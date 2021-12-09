@@ -91,13 +91,16 @@ require_once "header.php"; ?>
                 $row= $result->fetch_assoc(); // fetch data   
                   echo '
                   <div class="card posts">
-                      <div class="card-body"> 
-                          <h1>'. $row['title'] .' </h1>
-                          <a href="profile.php?id='. $row['user_id'] .'">
-                            <p class="card-subtitle font-italic">by: '. $row['username'] .'</p>
-                          </a>
-                          <p class="card-text mt-3">'. $row['content'] .'</p>
-                          <p class="card-subtitle float-right mt-3">Posted '. $row['time_created'] .'</h1>
+                      <div class="card-body">
+                          <div class="text-center d-inline-block">
+                            <img class="profilePic mb-3" style="width:100px;height:100px;" src="uploads/u'. $row['user_id'] .'.jpg"   alt="Profile picture" />
+                            <a href="profile.php?id='. $row['user_id'] .'">
+                              <p class="card-subtitle font-italic font-weight-bold post-username">'. $row['username'] . '</p>
+                            </a>
+                          </div>
+                          <h1 class="mt-3">'. $row['title'] .' </h1>
+                          <p class="card-text mt-3 mb-5">'. $row['content'] .'</p>
+                          <p class="card-subtitle float-right mt-3 post-time">'. $row['time_created'] .'</h1>
                       </div>
                   </div>
                   ';
@@ -171,14 +174,19 @@ require_once "header.php"; ?>
                     <div class="card posts">
                       <div class="card-body"> 
                         <a onClick="togglePost(this)" class="hide-post">  [ - ] </a>
-                        <a class="card-subtitle font-italic" href="profile.php?id='. $row['user_id'] .'"> by: '. $row['username'] .' </a>
+                        <div class="text-center d-inline-block">
+                            <img class="profilePic mb-3"  src="uploads/u'. $row['user_id'] .'.jpg"   alt="Profile picture" />
+                            <a href="profile.php?id='. $row['user_id'] .'">
+                              <p class="card-subtitle font-italic font-weight-bold">'. $row['username'] . '</p>
+                            </a>
+                        </div>
                         <p class="card-text mt-3"> '. $row['reply'] .'</p>
-                        <p class="card-subtitle float-right mt-3">Posted '. $row['reply_time'] .'</p>';
+                        <p class="card-subtitle float-right mt-3 post-time">'. $row['reply_time'] .'</p>';
                         
                         if ($_SESSION["loggedin"] == true) { //Only show reply button if logged in
                           echo 
                             '<a id="u'. $row['reply_id'] .'" class="replyButton" onclick="showReplyForm(this, \''. $row['username'] .'\')">
-                            <span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>
+                            <span class="float-left d-inline-block" style="font-size:0.9em;"> <i class="fas fa-comment mr-2"></i>Reply</span>
                             </a>
                             <span type="hidden" id="reply_id" value="'. $row['reply_id'] .'">';
                         }
@@ -216,12 +224,17 @@ require_once "header.php"; ?>
                             '<div class="card posts">' +
                             '<div class="card-body">' + 
                               '<a onClick="togglePost(this)" class="hide-post"> [ - ] </a>' +
-                              '<a class="card-subtitle font-italic" href="profile.php?id=<?php echo $row['user_id']?>"> by: <?php echo $row['username']?> </a>' +
+                              '<div class="text-center d-inline-block">' +
+                                '<img class="profilePic mb-3"  src="uploads/u<?php echo $row['user_id'] ?>.jpg"   alt="Profile picture" />' +
+                                '<a href="profile.php?id=<?php echo $row['user_id'] ?>">' +
+                                  '<p class="card-subtitle font-italic font-weight-bold"> <?php echo $row['username'] ?> </p>' +
+                                '</a>' +
+                              '</div>' +
                               '<p class="card-text mt-3"> <?php echo $row['reply'] ?></p>' +
-                              '<p class="card-subtitle float-right mt-3">Posted <?php echo $row['reply_time'] ?></p>' +
+                              '<p class="card-subtitle float-right mt-3 post-time"> <?php echo $row['reply_time'] ?></p>' +
                               <?php if ($_SESSION["loggedin"] == true) { //Only show reply button if logged in ?>
                               '<a id="u<?php echo $row['reply_id'] ?>" class="replyButton" onclick="showReplyForm(this, \'<?php echo $row['username']?>\')">' +
-                                '<span class="float-left d-inline-block" style="font-size:1.4em;"> <i class="fas fa-comment mr-2"></i>Reply</span>' +
+                                '<span class="float-left d-inline-block" style="font-size:0.9em;"> <i class="fas fa-comment mr-2"></i>Reply</span>' +
                               '</a>' +
                               '<span type="hidden" id="reply_id" value="<?php echo $row['reply_id'] ?>">' +
                               <?php } ?>
@@ -251,7 +264,7 @@ require_once "header.php"; ?>
 
           <?php if ($_SESSION["loggedin"] == true) { //Only show form if logged in ?>
           <!-- Reply Form  -->
-          <form action="" id="replyForm" method="post" class="mt-3">
+          <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="replyForm" method="post" class="mt-3">
             <div class="form-group">
               <div class="d-flex flex-row">
                 <label class="mt-auto">Post a reply</label>
