@@ -87,19 +87,19 @@ require_once "header.php"; ?>
               if(mysqli_stmt_execute($stmt)){
                 $result = $stmt->get_result(); // get the mysqli result
 
-                //Display Replies
+                //Display post info
                 $row= $result->fetch_assoc(); // fetch data   
                   echo '
                   <div class="card posts">
                       <div class="card-body">
                           <div class="text-center d-inline-block">
-                            <img class="profilePic mb-3" style="width:100px;height:100px;" src="uploads/u'. $row['user_id'] .'.jpg"   alt="Profile picture" />
+                            <img class="profilePic mb-3" style="width:100px;height:100px;" src="uploads/u'. $row['user_id'] .'.jpg" onerror="this.onerror=null; this.src=\'uploads/default.jpg\'" alt="Profile picture" />
                             <a href="profile.php?id='. $row['user_id'] .'">
                               <p class="card-subtitle font-italic font-weight-bold post-username">'. $row['username'] . '</p>
                             </a>
                           </div>
                           <h1 class="mt-3">'. $row['title'] .' </h1>
-                          <p class="card-text mt-3 mb-5">'. $row['content'] .'</p>
+                          <div class="card-text mt-3 mb-5">'. $row['content'] .'</div>
                           <p class="card-subtitle float-right mt-3 post-time">'. $row['time_created'] .'</h1>
                       </div>
                   </div>
@@ -130,7 +130,7 @@ require_once "header.php"; ?>
           
         <?php } else { ?>
           <!-- Display log in/sign up button -->
-          <div class="mt-3">
+          <div class="mt-3 mb-4">
             <a href="login.php" class="btn btn-primary">Log In</a>
             <a href="register.php" class="btn btn-primary">Sign Up</a>
             <p class="d-inline-block">Login or sign up to leave a comment</p>
@@ -175,30 +175,30 @@ require_once "header.php"; ?>
                       <div class="card-body"> 
                         <a onClick="togglePost(this)" class="hide-post">  [ - ] </a>
                         <div class="text-center d-inline-block">
-                            <img class="profilePic mb-3"  src="uploads/u'. $row['user_id'] .'.jpg"   alt="Profile picture" />
+                            <img class="profilePic mb-3"  src="uploads/u'. $row['user_id'] .'.jpg" onerror="this.onerror=null; this.src=\'uploads/default.jpg\'"  alt="Profile picture" />
                             <a href="profile.php?id='. $row['user_id'] .'">
                               <p class="card-subtitle font-italic font-weight-bold">'. $row['username'] . '</p>
                             </a>
                         </div>
-                        <p class="card-text mt-3"> '. $row['reply'] .'</p>
+                        <div class="card-text mt-3">'.$row['reply'] .' </div>
                         <p class="card-subtitle float-right mt-3 post-time">'. $row['reply_time'] .'</p>';
                         
                         if ($_SESSION["loggedin"] == true) { //Only show reply button if logged in
                           echo 
                             '<a id="u'. $row['reply_id'] .'" class="replyButton" onclick="showReplyForm(this, \''. $row['username'] .'\')">
                             <span class="float-left d-inline-block" style="font-size:0.9em;"> <i class="fas fa-comment mr-2"></i>Reply</span>
-                            </a>
-                            <span type="hidden" id="reply_id" value="'. $row['reply_id'] .'">';
+                            </a>';
                         }
+                        
                         echo '
+                        <span type="hidden" id="reply_id" value="'. $row['reply_id'] .'">
                       </div>
                     </div>
                     </div>
                     ';  
 
                   //If reply has a parent reply, display indented below parent
-                  } else {
-                    ?>
+                  } else { ?>
                     <script>
                       parentId = <?php echo $row['parent_reply_id']; ?>; //Parent Id for post being displayed
                       postsId = document.querySelectorAll('#reply_id'); //Array of all posts id
@@ -211,8 +211,8 @@ require_once "header.php"; ?>
                           var card = document.createElement('div'); 
                           card.style.cssText = post.style.cssText; //Set same flex order as parent
                           card.setAttribute('class', 'post-container'); //Set classes
-
-                          //set margin left to integer  and remove percentage mark
+                          
+                          //set margin left to integer and remove percentage mark
                           let parentIndent = parseInt(post.style.marginLeft.replace(/[^0-9]/g, ''));
                           if (isNaN(parentIndent)) { //If no margin make it 0
                             parentIndent = 0;
@@ -225,19 +225,19 @@ require_once "header.php"; ?>
                             '<div class="card-body">' + 
                               '<a onClick="togglePost(this)" class="hide-post"> [ - ] </a>' +
                               '<div class="text-center d-inline-block">' +
-                                '<img class="profilePic mb-3"  src="uploads/u<?php echo $row['user_id'] ?>.jpg"   alt="Profile picture" />' +
+                                '<img class="profilePic mb-3"  src="uploads/u<?php echo $row['user_id'] ?>.jpg" onerror="this.onerror=null; this.src=\'uploads/default.jpg\'" alt="Profile picture" />' +
                                 '<a href="profile.php?id=<?php echo $row['user_id'] ?>">' +
                                   '<p class="card-subtitle font-italic font-weight-bold"> <?php echo $row['username'] ?> </p>' +
                                 '</a>' +
                               '</div>' +
-                              '<p class="card-text mt-3"> <?php echo $row['reply'] ?></p>' +
+                              '<div class="card-text mt-3"> <?php echo $row['reply'] ?></div>' +
                               '<p class="card-subtitle float-right mt-3 post-time"> <?php echo $row['reply_time'] ?></p>' +
                               <?php if ($_SESSION["loggedin"] == true) { //Only show reply button if logged in ?>
                               '<a id="u<?php echo $row['reply_id'] ?>" class="replyButton" onclick="showReplyForm(this, \'<?php echo $row['username']?>\')">' +
                                 '<span class="float-left d-inline-block" style="font-size:0.9em;"> <i class="fas fa-comment mr-2"></i>Reply</span>' +
                               '</a>' +
-                              '<span type="hidden" id="reply_id" value="<?php echo $row['reply_id'] ?>">' +
                               <?php } ?>
+                              '<span type="hidden" id="reply_id" value="<?php echo $row['reply_id'] ?>">' +
                             '</div>' +
                             '</div>'
                           
