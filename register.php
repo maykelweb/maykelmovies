@@ -101,7 +101,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($username_err) && empty($password_err) && empty($email_err) && empty($confirm_password_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO users (username, password, email, hash) VALUES (?, ?, ?, ?)";
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -115,33 +115,35 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
             $param_email = $email;
             $param_hash = $hash;
-
-            //Send confirmation email
-            $asterisk = str_repeat("*", strlen($password)); //Replace password with asterisks
-            $to      = $email; // Send email to our user
-            $subject = 'Signup | Verification'; // Give the email a subject 
-            $message = '
-            
-            Thanks for signing up!
-            Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.
-  
-            ------------------------
-            Username: '.$username.'
-            Password: '.$asterisk.'
-            ------------------------
-  
-            Please click this link to activate your account:
-            http://www.maykelmovies.xyz/verify.php?email='.$email.'&hash='.$hash.'
-  
-            '; // Our message above including the link
-                      
-            $headers = 'From:confirmations@maykelmovies.xyz' . "\r\n"; // Set from headers
-            mail($to, $subject, $message, $headers); // Send our email
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
+
+                //Send confirmation email
+                $asterisk = str_repeat("*", strlen($password)); //Replace password with asterisks
+                $to      = $email; // Send email to our user
+                $subject = 'Signup | Verification'; // Give the email a subject 
+                $message = '
+            
+                Thanks for signing up!
+                Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.
+  
+                ------------------------
+                Username: '.$username.'
+                Password: '.$asterisk.'
+                ------------------------
+  
+                Please click this link to activate your account:
+                http://www.maykelmovies.xyz/verify.php?email='.$email.'&hash='.$hash.'
+  
+                '; // Our message above including the link
+                      
+                $headers = 'From:confirmation@maykelmovies.xyz' . "\r\n"; // Set from headers
+                mail($to, $subject, $message, $headers); // Send our email
+                    
                 // Redirect to login page
                 header("location: login.php");
+
             } else {
                 echo '<div class="alert alert-danger m-0"> Oops! Something went wrong. Please try again later. </div>';
             }

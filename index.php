@@ -11,11 +11,22 @@ require_once "header.php";
 ?>
 
 <body>
-    <?php require_once "navbar.php" ?>
+    <?php require_once "navbar.php";
+    //Show verification required message if user is not verified
+    if ($_SESSION['user_level'] == "0") {
+      echo '
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Your account is still not verified. To resend verification email please click <a href="confirmation.php"> here </a> 
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>';
+    }
+    ?>
     
     <div class="container">
       <div id="search-container">
-        <h1 class="text-center mt-5 mb-2 color-primary font-weight-bold"> SEARCH </h1>
+        <h1 class="text-center mt-5 mb-2 color-primary font-weight-bold"> search </h1>
         <div class="search-box">
           <input type="text">
         </div>
