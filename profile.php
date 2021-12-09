@@ -24,6 +24,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
  $bannerexptype=$extension;
  $filepath="uploads/u". $id . ".jpg";
  move_uploaded_file($_FILES["banner"]["tmp_name"],$filepath);
+ header( "Location: {$_SERVER['REQUEST_URI']}", true, 303 );
 }
 
 // Compress image
@@ -67,19 +68,30 @@ require_once "header.php";
             <!-- Posts -->
             <div class="row mt-5">
                 <div class="" style="width:100%;">
-                    <img style="width:100px;height:100px;border-radius: 50%;background-color: black;display:block; margin-bottom: 15px;" src="uploads/u<?php echo $id ?>.jpg" />
-                    <a class="btn p-0"> Follow </a>
-                    <a class="btn"> Message </a>
-                    <a class="btn" href="logout.php"> Log Out </a>
-                    <a class="btn"> Change Timezone </a>
-                    <a class="btn"> Change profile picture </a>
+                    <img class="profilePic mb-3" style="width:100px;height:100px;" src="uploads/u<?php echo $id ?>.jpg" onerror="this.onerror=null; this.src='uploads/default.jpg'" alt="Profile picture" />
+
+                    <?php 
+                    //Only show if looking at another user's profile.
+                    //If user id in session is not equal to profile page id
+                    if ($id !== $_SESSION['id']) {
+                    ?>
+                        <a class="btn p-0"> Follow </a>
+                        <a class="btn"> Message </a>
+                    <?php 
+                    //else show settings if profile is the logged in user's profile.
+                    } else {
+                    ?>
+                        <a class="btn" href="logout.php"> Log Out </a>
+                        <a class="btn"> Change Timezone </a>
+                        <form class="d-inline-block" action="profile.php" method="post" enctype="multipart/form-data">
+                            <label for="files" class="btn m-0">Change profile image</label>
+                            <input id="files" type="file" name="banner" onchange="this.form.submit()" style="visibility:hidden;"/>
+                        </form>
+                    <?php
+                    }
+                    ?>
                 </div>
             </div>
-
-            <form action="profile.php" method="post" enctype="multipart/form-data">
-                <input type="file" name="banner" >
-                <input type="submit" value="submit">
-            </form>
 
             <!-- Profile Info -->
             <div class="row mt-3">

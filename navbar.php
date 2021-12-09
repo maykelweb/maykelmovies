@@ -28,7 +28,7 @@
                 echo ($_SESSION['loggedin']) ? 
               '<a href="profile.php" class="d-flex align-items-center">
                 <p class="navUsername">'. $_SESSION['username'] .'</p>
-                <img class="temporaryProfilePic" src="uploads/u'. $_SESSION['id'] .'.jpg"></img> 
+                <img class="profilePic" src="uploads/u'. $_SESSION['id'] .'.jpg" onerror="this.onerror=null; if (this.src != \'Default.jpg\') this.src=\'uploads/default.jpg\'" alt="Profile picture"></img> 
                </a>' : 
               '<a href="login.php" class="btn btn-light loginButton">  Log In </a>'
                ?>
