@@ -6,70 +6,87 @@ require_once "config.php";
 if (session_id() == "")
   session_start();
 
+// Define variables and initialize with empty values
+$$email = $hash = "error";
+$email_err = $hash_error = "error";
+
 //Check if we have our $_GET variables for email verification
 if (isset($_GET['email']) && !empty($_GET['email']) AND isset($_GET['hash']) && !empty($_GET['hash'])) {
 
-    // Verify data
-    $email = mysql_escape_string($_GET['email']); // Set email variable
-    $hash = mysql_escape_string($_GET['hash']); // Set hash variable
-    $search = mysql_query("SELECT email, hash, user_level FROM users WHERE email = ? AND hash = ? AND active='0'") or die(mysql_error()); 
-    $match  = mysql_num_rows($search);
-
     // Prepare a select statement
-    $sql = "SELECT email, hash, user_level FROM users WHERE email = ? AND hash = ? AND active='0'";
-        
+    $sql = "SELECT email, user_level, hash FROM users WHERE email = ? AND hash = ? AND user_level = 0";
+
+    //Prepare statement to check if email and hash are correct
     if ($stmt = mysqli_prepare($link, $sql)) {
 
         // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "sS", $param_email, $param_hash);
-        
+        mysqli_stmt_bind_param($stmt, "ss", $param_email, $param_hash);
+            
         // Set parameters
-        $param_username = $_GET['email'];
-        $param_hash = $_GET['hash'];
-        
+        $param_email = trim($_GET["email"]);
+        $param_hash = trim($_GET["hash"]);
+            
         // Attempt to execute the prepared statement
         if (mysqli_stmt_execute($stmt)) {
-            // Store result
+
+            /* store result */
             mysqli_stmt_store_result($stmt);
             
-            // Check if username exists, if yes then verify password
-            if (mysqli_stmt_num_rows($stmt) == 1) {                    
-                // Bind result variables
-                mysqli_stmt_bind_result($stmt, $email, $hash, $user_level);
+            //Check email and hash matches a user with 0 user level
+            if (mysqli_stmt_num_rows($stmt) == 1) {
+                
+                //Set email and hash variables
+                $email = trim($_GET["email"]);
+                $hash = trim($_GET["hash"]);
 
-                if (mysqli_stmt_fetch($stmt)) {
-
-                    //Change user level with statement
-                    // Prepare an insert statement
-                    $sql = "INSERT users SET user_level='1' WHERE email = ? AND hash = ? AND user_level='0'";
-
-                    if ($stmt = mysqli_prepare($link, $sql)) {
-                        // Bind variables to the prepared statement as parameters
-                        mysqli_stmt_bind_param($stmt, "ss", $param_email, $param_hash);
-        
-                        // Set parameters
-                        $param_username = $_GET['email'];
-                        $param_hash = $_GET['hash'];
-        
-                        // Attempt to execute the prepared statement
-                        if(mysqli_stmt_execute($stmt)){
-                           
-                            // Redirect user to home page
-                            header("location: index.php");
-                        }
-                    }
+                //Set errors to empty
+                $email_err = "";
+                $hash_error = "";
             } else {
-                // No match -> invalid url or account has already been activated.
+                //Couldn't find a matching email and hash with user level 0
+                echo '<div class="alert alert-danger m-0"> Sorry we couldn\'t match your details to our database or this account is already verified </div>';
             }
-        } else{
-            echo '<div class="alert alert-danger"> Oops! Something went wrong. Please try again later. </div>';
+        } else {
+            echo '<div class="alert alert-danger m-0"> Oops! Something went wrong. Please try again later. </div>';
         }
 
         // Close statement
         mysqli_stmt_close($stmt);
     }
+
+    // Check for errors before inserting in database
+    if (empty($email_err) && empty($hash_error)) {
+        
+        // Prepare an update statement
+        $sql = "UPDATE users SET user_level = '1' WHERE email = ?";
+         
+        if ($stmt = mysqli_prepare($link, $sql)) {
+
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "s", $param_email);
+
+            
+            $param_email = $email;
+            
+            // Attempt to execute the prepared statement
+            if(mysqli_stmt_execute($stmt)){
+
+                //Update user level for user session
+                $_SESSION["user_level"] = 1; 
+                    
+                // Redirect to home page
+                header("location: index.php");
+            } else {
+                echo '<div class="alert alert-danger m-0"> Oops! Something went wrong. Please try again later. </div>';
+            }
+
+            // Close statement
+            mysqli_stmt_close($stmt);
+        }
+    }
+    
 } else {
-    // Invalid approach
+    // Sorry the url you have entered is invalid
 }
 
 //Get dynamic header

@@ -62,8 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["loggedin"] = true;
                             $_SESSION["id"] = $id;
                             $_SESSION["user_level"] = $user_level; 
-                            $_SESSION["username"] = $username;   
-                            //$_SESSION['verified'] = $                        
+                            $_SESSION["username"] = $username;                    
                             
                             // Redirect user to home page
                             header("location: index.php");
