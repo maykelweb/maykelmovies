@@ -71,8 +71,10 @@ if (isset($_GET['email']) && !empty($_GET['email']) AND isset($_GET['hash']) && 
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
 
-                //Update user level for user session
-                $_SESSION["user_level"] = 1; 
+                //Update user level for user session if logged in
+                if ($_SESSION["logged_in"] = true ) {
+                    $_SESSION["user_level"] = 1; 
+                }
                     
                 // Redirect to home page
                 header("location: index.php");

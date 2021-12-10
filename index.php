@@ -16,11 +16,21 @@ require_once "header.php";
     if ($_SESSION['user_level'] == "0") {
       echo '
       <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        Your account is still not verified. To resend verification email please click <a href="confirmation.php"> here </a> 
+        Your account is still not verified to post yet. To resend verification email please click <a href="resendConfirmation.php"> here </a> 
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>';
+    } else if ($_SESSION['user_level'] == "303") {
+      //verification email has been sent
+      echo '
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        Success! Your verification email has been sent again. Please wait up to 15 minutes and check your spam folder. If you still don\'t see it contact us for support. 
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>';
+      $_SESSION['user_level'] = "0";
     }
     ?>
     
