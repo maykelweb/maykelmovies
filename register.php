@@ -7,7 +7,7 @@ $username = $password = $email = $confirm_password = "";
 $username_err = $password_err = $email_err = $confirm_password_err = "";
  
 // Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate Email
     if (empty(trim($_POST["email"]))) {
         $email_err = "Please enter an email.";
@@ -44,10 +44,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
  
     // Validate username
-    if (empty(trim($_POST["username"]))){
+    if (empty(trim($_POST["username"]))) {
         $username_err = "Please enter a username.";
-    } else if (!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["username"]))){
+    } else if (!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["username"]))) {
         $username_err = "Username can only contain letters, numbers, and underscores.";
+    } elseif (strlen(trim($_POST["username"])) > 29) {
+        $username_err = "Username is too long.";
     } else {
         // Prepare a select statement
         $sql = "SELECT user_id FROM users WHERE username = ?";
@@ -79,31 +81,33 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     // Validate password
-    if(empty(trim($_POST["password"]))){
+    if (empty(trim($_POST["password"]))) {
         $password_err = "Please enter a password.";     
-    } elseif(strlen(trim($_POST["password"])) < 6){
+    } elseif (strlen(trim($_POST["password"])) < 6) {
         $password_err = "Password must have atleast 6 characters.";
-    } else{
+    } elseif (strlen(trim($_POST["password"])) > 200) {
+        $password_err = "Password is too long.";
+    } else {
         $password = trim($_POST["password"]);
     }
     
     // Validate confirm password
-    if(empty(trim($_POST["confirm_password"]))){
+    if (empty(trim($_POST["confirm_password"]))) {
         $confirm_password_err = "Please confirm password.";     
-    } else{
+    } else {
         $confirm_password = trim($_POST["confirm_password"]);
-        if(empty($password_err) && ($password != $confirm_password)){
+        if (empty($password_err) && ($password != $confirm_password)) {
             $confirm_password_err = "Password did not match.";
         }
     }
     
     // Check input errors before inserting in database
-    if(empty($username_err) && empty($password_err) && empty($email_err) && empty($confirm_password_err)){
+    if (empty($username_err) && empty($password_err) && empty($email_err) && empty($confirm_password_err)) {
         
         // Prepare an insert statement
         $sql = "INSERT INTO users (username, password, email, hash) VALUES (?, ?, ?, ?)";
          
-        if($stmt = mysqli_prepare($link, $sql)){
+        if ($stmt = mysqli_prepare($link, $sql)) {
             // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "ssss", $param_username, $param_password, $param_email, $param_hash);
             
@@ -117,7 +121,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_hash = $hash;
             
             // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
+            if (mysqli_stmt_execute($stmt)) {
 
                 //Send confirmation email
                 $asterisk = str_repeat("*", strlen($password)); //Replace password with asterisks
