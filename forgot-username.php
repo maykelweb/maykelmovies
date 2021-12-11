@@ -60,11 +60,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         header("location: login.php");
                         
                         } catch (Exception $e) {
-                            echo 'Caught exception: ',  $e->getMessage(), "\n";
+                            echo '<div class="alert alert-danger m-0"> Oops! Something went wrong. Please try again later. </div>';
                         }
                     }
                 } else {
-                    $email_err = "Sorry we don't have this email address in our servers.";
+                    $email_err = "Sorry but there are no accounts associated with that email address.";
                 }
             } else {
                 echo '<div class="alert alert-danger m-0"> Oops! Something went wrong. Please try again later. </div>';

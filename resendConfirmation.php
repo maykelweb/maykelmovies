@@ -39,7 +39,7 @@ if ($_SESSION['user_level'] == "0") {
         header("location: login.php");
         
     } catch (Exception $e) {
-        echo 'Caught exception: ',  $e->getMessage(), "\n";
+        echo '<div class="alert alert-danger m-0"> Oops! Something went wrong. Please try again later. </div>';
     }
 
 //User is already verified
