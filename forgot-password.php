@@ -81,18 +81,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 //Send email with password reset link
                 try {
                     $to      = trim($_POST["email"]); // Send email to our user
-                    $subject = 'Forgotten Username'; // Give the email a subject 
+                    $subject = 'Forgotten Password'; // Give the email a subject 
                     $message = '
             
                     A request was made for a forgetten password. If this request was not made by you please make sure your accounts are secured.
                             
                     To reset your password please click the link below:
-                    https://www.maykelmovies.xyz/reset-password.php?email='.$email.'token='.$hash.'
+                    https://www.maykelmovies.xyz/reset-password.php?email='.trim($_POST["email"]).'&token='.$token.'
             
-                    '; // Our message above including the username
+                    '; // Our message above with password reset link
+                          
+                    $headers = 'From:confirmation@maykelmovies.xyz' . "\r\n"; // Set from headers
+                    mail($to, $subject, $message, $headers); // Send our email
                     
                     //Create success message to display at login.php
-                    $_SESSION['loginMsg'] = "An email has been sent with a username reminder";
+                    $_SESSION['loginMsg'] = "An email has been sent with a password reset link";
                     // Redirect user to login page
                     header("location: login.php");
 
