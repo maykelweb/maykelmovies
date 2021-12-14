@@ -45,7 +45,11 @@ function compressedImage($source, $path, $quality) {
 
 }
 
-
+//Check if session ID is still empty
+if (empty($id)) {
+    // Redirect user to login
+    header("location: login.php");     
+}
 
 //Get dynamic header
 require_once "header.php"; 
@@ -54,12 +58,18 @@ require_once "header.php";
 <body>
     <?php require_once "navbar.php"; 
 
-    //Check user has session ID
-    if (empty($id)) {
-        //AWESOME ERROR DESIGN GOES HERE
-        echo "Sorry you don't seem to be logged in";
-        die();
-    }?>
+    //Show any server messages
+    if (!empty($_SESSION['msg'])) {
+        echo '
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            '. $_SESSION['msg'] .'
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>';
+        $_SESSION['msg'] = "";
+    }
+    ?>
 
     <!-- Profile Section -->
     <section>
@@ -82,6 +92,7 @@ require_once "header.php";
                     } else {
                     ?>
                         <a class="btn" href="logout.php"> Log Out </a>
+                        <a class="btn" href="change-password.php"> Change Password </a>
                         <a class="btn"> Change Timezone </a>
                         <form class="d-inline-block" action="profile.php" method="post" enctype="multipart/form-data">
                             <label for="files" class="btn m-0">Change profile image</label>
