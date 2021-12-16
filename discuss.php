@@ -169,7 +169,7 @@ require_once "header.php"; ?>
         <div class="container d-flex flex-column">
           <?php
             //Query to get all replies joined by users from database
-            $sql = "SELECT * FROM replies LEFT JOIN users ON replies.reply_user = users.user_id WHERE replies.reply_post = ? ORDER BY replies.parent_reply_id ASC";
+            $sql = "SELECT * FROM replies LEFT JOIN users ON replies.reply_user = users.user_id LEFT JOIN likes ON likes.like_reply_id = replies.reply_id WHERE replies.reply_post = ? ORDER BY replies.parent_reply_id ASC";
         
             if ($stmt = mysqli_prepare($link, $sql)) {
               // Bind variables to the prepared statement as parameters
@@ -184,13 +184,14 @@ require_once "header.php"; ?>
 
                 //Declaring empty js variables
                 ?><script>let parentId, postsId, posts;</script><?php 
-
-                //Display Replies
+                
                 $count = 0; //Count to display flex order
 
                 //Loop through all variables in SQL array and echo reply html
                 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                   if (empty($row['parent_reply_id'])) { //Check post has no parent reply
+
+                    //Display Replies HTML
                     echo '
                     <div class="post-container" style="order:'.$count.'">
                     <div class="card posts">
@@ -203,12 +204,13 @@ require_once "header.php"; ?>
                             </a>
                         </div>
                         <div class="card-text mt-3">'.$row['reply'] .' </div>
+                        <a id="likeButton" class="float-left mr-2 '.($row['like_user_id'] == $_SESSION['id'] ? "postLiked" : "").'" onclick="likeReply(this, '.$row['reply_id'].', '.$_SESSION['id'].', '.$id.')"> <i class="fas fa-thumbs-up mr-1"></i> <span>'.($row['reply_likes'] == 0 ? "" : $row['reply_likes']).'</span> </a>
                         <p class="card-subtitle float-right mt-3 post-time">'. $row['reply_time'] .'</p>';
                         
                         if ($_SESSION["loggedin"] == true) { //Only show reply button if logged in
                           echo 
                             '<a id="u'. $row['reply_id'] .'" class="replyButton" onclick="showReplyForm(this, \''. $row['username'] .'\')">
-                            <span class="float-left d-inline-block" style="font-size:0.9em;"> <i class="fas fa-comment mr-2"></i>Reply</span>
+                            <span class="float-left d-inline-block"> <i class="fas fa-comment mr-2"></i>Reply</span>
                             </a>';
                         }
                         
@@ -218,7 +220,8 @@ require_once "header.php"; ?>
                     </div>
                     </div>
                     ';  
-
+                        //'.($row['like_user_id'] == $_SESSION['id'] ? "postLiked" : "").'
+                        
                   //If reply has a parent reply, display indented below parent
                   } else { ?>
                     <script>
@@ -253,6 +256,9 @@ require_once "header.php"; ?>
                                 '</a>' +
                               '</div>' +
                               '<div class="card-text mt-3"> <?php echo $row['reply'] ?></div>' +
+
+                              '<a id="likeButton" class="float-left mr-2 <?php echo ($row["like_user_id"] == $_SESSION["id"] ? "postLiked" : "")?>" onclick="likeReply(this, <?php echo $row["reply_id"] . ", " . $_SESSION["id"] . ", " . $id ?>)"> <i class="fas fa-thumbs-up mr-1"></i> <span> <?php echo ($row["reply_likes"] == 0 ? "" : $row["reply_likes"])?></span> </a>' +
+
                               '<p class="card-subtitle float-right mt-3 post-time"> <?php echo $row['reply_time'] ?></p>' +
                               <?php if ($_SESSION["loggedin"] == true) { //Only show reply button if logged in ?>
                               '<a id="u<?php echo $row['reply_id'] ?>" class="replyButton" onclick="showReplyForm(this, \'<?php echo $row['username']?>\')">' +

@@ -80,3 +80,46 @@ function likePost(e, postID, userID) {
     }
   }); 
 }
+
+//Like Reply
+function likeReply(e, replyID, userID, postID) {
+  //Create AJAX request to like a reply
+  $.ajax({
+    url: "likeReply.php",
+    type: "get", //send it through get method
+    data: {
+      replyId: replyID,
+      userId: userID,
+      postId: postID
+  },
+    success: function (response) {
+      //Check if reply is already liked or not
+      if (e.classList.contains('postLiked')) { //Remove Like
+        e.classList.remove('postLiked')
+        e.children[1].textContent = parseInt(e.children[1].textContent) - 1; //Decrement like number
+
+        //Check if likes = 0 and remove the 0 from showing
+        if (e.children[1].textContent = "0") {
+          e.children[1].textContent = "";
+        }
+      } else { //Add Like
+        e.classList.add('postLiked')
+        e.children[1].textContent = parseInt(e.children[1].textContent) + 1; //Increment like number
+
+        //If it's first like for reply it will be NaN, set automatically to 1
+        if (isNaN(e.children[1].textContent)) {
+          e.children[1].textContent = 1;
+        }
+      }
+    },
+    error: function (xhr) {
+      if (xhr.status == "403") {
+        //Ignore because user is forbidden from liking
+        console.log("forbidden");
+      } else {
+        //Do Something to handle error
+        console.log("error");
+      }
+    }
+  }); 
+}
