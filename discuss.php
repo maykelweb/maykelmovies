@@ -100,8 +100,10 @@ require_once "header.php"; ?>
                   }
 
                   //Increase like count
-                  $likeCount = $likeCount + 1;
-                  if ($likeCount == 0) $likeCount = "";
+                  if (!empty($row['like_id'])) {
+                    $likeCount = $likeCount + 1;
+                  }
+                  if ($likeCount == 0) $likeCount = ""; //Stop showing 0 on likes
 
                   //Set last loop as post array to display below
                   $post = $row;

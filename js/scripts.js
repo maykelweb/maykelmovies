@@ -41,7 +41,6 @@ function closeReplyForm() {
 
 //Like Posts
 function likePost(e, postID, userID) {
-  console.log("here");
   //Create AJAX request to like a post
   $.ajax({
     url: "likePost.php",
@@ -52,12 +51,22 @@ function likePost(e, postID, userID) {
   },
     success: function (response) {
       //Check if post is already liked or not
-      if (e.classList.contains('postLiked')) {
+      if (e.classList.contains('postLiked')) { //Remove Like
         e.classList.remove('postLiked')
         e.children[1].textContent = parseInt(e.children[1].textContent) - 1; //Decrement like number
-      } else {
+
+        //Check if likes = 0 and remove the 0 from showing
+        if (e.children[1].textContent = "0") {
+          e.children[1].textContent = "";
+        }
+      } else { //Add Like
         e.classList.add('postLiked')
         e.children[1].textContent = parseInt(e.children[1].textContent) + 1; //Increment like number
+
+        //If it's first like for post it will be NaN, set automatically to 1
+        if (isNaN(e.children[1].textContent)) {
+          e.children[1].textContent = 1;
+        }
       }
     },
     error: function (xhr) {

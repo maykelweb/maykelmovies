@@ -70,6 +70,27 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" AND isset($_GET['postId']) AND !empty($_
             mysqli_stmt_close($stmt);
         }
 
+        // Increment database post likes
+        $sql = "UPDATE posts SET likes = likes + 1 WHERE post_id = ?";
+
+        if ($stmt = mysqli_prepare($link, $sql)) {
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "i", $param_postID);
+    
+            // Set parameters
+            $param_postID = $postId;
+    
+            // Attempt to execute the prepared statement
+            if (mysqli_stmt_execute($stmt)) {
+                //Success
+            } else { //Send back ajax error
+                header('HTTP/1.0 500 Internal Server Error');
+            }
+
+            // Close statement
+            mysqli_stmt_close($stmt);
+        }
+
     //Unlike post
     } else if ($unlike == true) {
         // Prepare a delete statement
@@ -81,6 +102,27 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" AND isset($_GET['postId']) AND !empty($_
     
             // Set parameters
             $param_userID = trim($_GET['userId']);
+            $param_postID = trim($_GET['postId']);
+    
+            // Attempt to execute the prepared statement
+            if (mysqli_stmt_execute($stmt)) {
+                //Success
+            } else { //Send back ajax error
+                header('HTTP/1.0 500 Internal Server Error');
+            }
+
+            // Close statement
+            mysqli_stmt_close($stmt);
+        }
+
+        // Decrement database post likes
+        $sql = "UPDATE posts SET likes = likes - 1 WHERE post_id = ?";
+
+        if ($stmt = mysqli_prepare($link, $sql)) {
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "i", $param_postID);
+    
+            // Set parameters
             $param_postID = trim($_GET['postId']);
     
             // Attempt to execute the prepared statement
