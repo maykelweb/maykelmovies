@@ -12,6 +12,7 @@ require_once "header.php";
 
 <body>
     <?php require_once "navbar.php";
+
     //Show verification required message if user is not verified
     if ($_SESSION['user_level'] == "0") {
       echo '
@@ -21,7 +22,7 @@ require_once "header.php";
           <span aria-hidden="true">&times;</span>
         </button>
       </div>';
-    } else if ($_SESSION['user_level'] == "303") {
+    } else if ($_SESSION['user_level'] == "303") {//user level 303 is code for user currently verifying
       //verification email has been sent
       echo '
       <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -30,7 +31,7 @@ require_once "header.php";
           <span aria-hidden="true">&times;</span>
         </button>
       </div>';
-      $_SESSION['user_level'] = "0";
+      $_SESSION['user_level'] = "0"; //Set 0 so verify message will show again if not verified
     }
     ?>
     
