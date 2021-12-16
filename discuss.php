@@ -74,7 +74,7 @@ require_once "header.php"; ?>
         <div class="container">
         <?php
             //Query to get all replies joined by users from database
-            $sql = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.post_id = ?";
+            $sql = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id LEFT JOIN likes ON likes.like_post_id = posts.post_id WHERE posts.post_id = ?";
         
             if ($stmt = mysqli_prepare($link, $sql)) {
               // Bind variables to the prepared statement as parameters
@@ -87,25 +87,45 @@ require_once "header.php"; ?>
               if(mysqli_stmt_execute($stmt)){
                 $result = $stmt->get_result(); // get the mysqli result
 
-                //Display post info
-                $row= $result->fetch_assoc(); // fetch data   
-                  echo '
+                //Set variables
+                $postLiked = "";
+                $likeCount = 0;
+
+                //Loop through likes
+                while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+
+                  //If user id has liked the post, set postLiked variable
+                  if ($row['like_user_id'] == $_SESSION['id']) {
+                    $postLiked = "postLiked"; 
+                  }
+
+                  //Increase like count
+                  $likeCount = $likeCount + 1;
+                  if ($likeCount == 0) $likeCount = "";
+
+                  //Set last loop as post array to display below
+                  $post = $row;
+                }
+
+                //Display post html
+                echo '
                   <div class="card posts">
                       <div class="card-body">
                           <div class="text-center d-inline-block">
-                            <img class="profilePic mb-3" style="width:100px;height:100px;" src="uploads/u'. $row['user_id'] .'.jpg" onerror="this.onerror=null; this.src=\'uploads/default.jpg\'" alt="Profile picture" />
-                            <a href="profile.php?id='. $row['user_id'] .'">
-                              <p class="card-subtitle font-italic font-weight-bold post-username">'. $row['username'] . '</p>
+                            <img class="profilePic mb-3" style="width:100px;height:100px;" src="uploads/u'. $post['user_id'] .'.jpg" onerror="this.onerror=null; this.src=\'uploads/default.jpg\'" alt="Profile picture" />
+                            <a href="profile.php?id='. $post['user_id'] .'">
+                              <p class="card-subtitle font-italic font-weight-bold post-username">'. $post['username'] . '</p>
                             </a>
                           </div>
-                          <h1 class="mt-3">'. $row['title'] .' </h1>
-                          <div class="card-text mt-3 mb-5">'. $row['content'] .'</div>
-                          <p class="card-subtitle float-right mt-3 post-time">'. $row['time_created'] .'</h1>
+                          <h1 class="mt-3">'. $post['title'] .' </h1>
+                          <div class="card-text mt-3 mb-5">'. $post['content'] .'</div>
+                          <a id="likeButton" class="float-left '.$postLiked.'" onclick="likePost(this, '.$post['post_id'].', '.$_SESSION['id'].')"> <i class="fas fa-thumbs-up mr-1"></i> <span>'.$likeCount.'</span> </a>
+                          <p class="card-subtitle float-right post-time">'. $post['time_created'] .'</h1>
                       </div>
                   </div>
-                  ';
+                ';
                 
-              } else{
+              } else {
                 echo '<div class="alert alert-danger"> Oops! Something went wrong. Please try again later. </div>';
               }
 
@@ -281,10 +301,6 @@ require_once "header.php"; ?>
           <?php } ?>
         </div>
     </section>
-
-    <script>
-      //Load all session storage posts and set style to closed
-    </script>
 
 <?php
 require_once("footer.php");
