@@ -18,7 +18,7 @@ function displayPosts($query, $link){
                 '. mb_strimwidth($row['content'], 0, 130, "...") .'
               </a>
               <div class="mt-3">
-                <a id="likeButton" class="mr-2" onclick="likePost(this, '.$row['post_id'].', '.$_SESSION['id'].')"> 
+                <a id="likeButton" class="mr-2 '.($row['like_user_id'] == $_SESSION['id'] ? "postLiked" : "").'" onclick="likePost(this, '.$row['post_id'].', '.$_SESSION['id'].')"> 
                   <i class="fas fa-thumbs-up mr-1"></i> <span>'.$row['likes'].'</span> 
                 </a>
                 <span> '. $row['replies'] .' Replies </span>

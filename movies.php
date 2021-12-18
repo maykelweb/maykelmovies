@@ -118,7 +118,7 @@ require_once "header.php";
         <div id="moviePosts" class="mt-1">
           <?php
             //Selecting all posts and users connected to those posts from database and ordering by time descending
-            $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.topic = 1 ORDER BY posts.time_created DESC";
+            $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id LEFT JOIN likes ON likes.like_post_id = posts.post_id WHERE posts.topic = 1 ORDER BY posts.time_created DESC";
             displayPosts($query, $link);
           ?>
         </div>
