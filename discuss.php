@@ -135,15 +135,20 @@ require_once "header.php"; ?>
                 echo '
                   <div class="card posts">
                       <div class="card-body">
-                          <div class="text-center d-inline-block">
-                            <img class="profilePic mb-3" style="width:100px;height:100px;" src="uploads/u'. $post['user_id'] .'.jpg" onerror="this.onerror=null; this.src=\'uploads/default.jpg\'" alt="Profile picture" />
-                            <a class="d-inline-block ml-2" href="profile.php?id='. $post['user_id'] .'">
+                          <div class="text-center d-inline-block mb-2">
+                            <img class="profilePic" style="width:100px;height:100px;" src="uploads/u'. $post['user_id'] .'.jpg" onerror="this.onerror=null; this.src=\'uploads/default.jpg\'" alt="Profile picture" />
+                            <a class="d-inline-block align-bottom ml-2 mb-3" href="profile.php?id='. $post['user_id'] .'">
                               <p class="card-subtitle font-italic"> <b>'. $post['username'] .'</b> '.timePassed($post['time_created']).'</p>
                             </a>
                           </div>
-                          <h1 class="mt-3">'. $post['title'] .' </h1>
-                          <div class="card-text mt-3 mb-5">'. $post['content'] .'</div>
-                          <a id="likeButton" class="float-left '.$postLiked.'" onclick="likePost(this, '.$post['post_id'].', '.$_SESSION['id'].')"> <i class="fas fa-thumbs-up mr-1"></i> <span>'.$likeCount.'</span> </a>
+                          <h1>'. $post['title'] .'</h1>
+                          <div class="card-text mb-4">'. $post['content'] .'</div>
+
+                          <div>
+                            <a id="likeButton" class="'.$postLiked.'" onclick="likePost(this, '.$post['post_id'].', '.$_SESSION['id'].')"> <i class="fas fa-thumbs-up mr-1"></i> <span>'.$likeCount.'</span> </a>
+                            <span> '. $post['replies'] .' Replies </span>
+                            <a class="post-share ml-2" onclick="share()"> Share </a>
+                          </div>
                       </div>
                   </div>
                 ';
@@ -225,16 +230,18 @@ require_once "header.php"; ?>
                             </a>
                         </div>
                         <div class="card-text mt-3">'.$row['reply'] .' </div>
-                        <a id="likeButton" class="float-left mr-2 '.($row['like_user_id'] == $_SESSION['id'] ? "postLiked" : "").'" onclick="likeReply(this, '.$row['reply_id'].', '.$_SESSION['id'].', '.$id.')"> <i class="fas fa-thumbs-up mr-1"></i> <span>'.($row['reply_likes'] == 0 ? "" : $row['reply_likes']).'</span> </a>';
+
+                        <a id="likeButton" class="mr-2 '.($row['like_user_id'] == $_SESSION['id'] ? "postLiked" : "").'" onclick="likeReply(this, '.$row['reply_id'].', '.$_SESSION['id'].', '.$id.')"> <i class="fas fa-thumbs-up mr-1"></i> <span>'.($row['reply_likes'] == 0 ? "" : $row['reply_likes']).'</span> </a>';
                         
                         if ($_SESSION["loggedin"] == true) { //Only show reply button if logged in
                           echo 
                             '<a id="u'. $row['reply_id'] .'" class="replyButton" onclick="showReplyForm(this, \''. $row['username'] .'\')">
-                            <span class="float-left d-inline-block"> <i class="fas fa-comment mr-2"></i>Reply</span>
+                            <span class="d-inline-block mr-1"> <i class="fas fa-comment mr-2"></i>Reply</span>
                             </a>';
                         }
                         
                         echo '
+                        <a> Share </a>
                         <span type="hidden" id="reply_id" value="'. $row['reply_id'] .'">
                       </div>
                     </div>
@@ -277,13 +284,15 @@ require_once "header.php"; ?>
                               '</div>' +
                               '<div class="card-text mt-3"> <?php echo $row['reply'] ?></div>' +
 
-                              '<a id="likeButton" class="float-left mr-2 <?php echo ($row["like_user_id"] == $_SESSION["id"] ? "postLiked" : "")?>" onclick="likeReply(this, <?php echo $row["reply_id"] . ", " . $_SESSION["id"] . ", " . $id ?>)"> <i class="fas fa-thumbs-up mr-1"></i> <span> <?php echo ($row["reply_likes"] == 0 ? "" : $row["reply_likes"])?></span> </a>' +
+                              '<a id="likeButton" class="mr-2 <?php echo ($row["like_user_id"] == $_SESSION["id"] ? "postLiked" : "")?>" onclick="likeReply(this, <?php echo $row["reply_id"] . ", " . $_SESSION["id"] . ", " . $id ?>)"> <i class="fas fa-thumbs-up mr-1"></i> <span> <?php echo ($row["reply_likes"] == 0 ? "" : $row["reply_likes"])?></span> </a>' +
 
                               <?php if ($_SESSION["loggedin"] == true) { //Only show reply button if logged in ?>
                               '<a id="u<?php echo $row['reply_id'] ?>" class="replyButton" onclick="showReplyForm(this, \'<?php echo $row['username']?>\')">' +
-                                '<span class="float-left d-inline-block" style="font-size:0.9em;"> <i class="fas fa-comment mr-2"></i>Reply</span>' +
+                                '<span class="d-inline-block mr-1"> <i class="fas fa-comment mr-2"></i>Reply</span>' +
                               '</a>' +
                               <?php } ?>
+                              
+                              '<a> Share </a>' +
                               '<span type="hidden" id="reply_id" value="<?php echo $row['reply_id'] ?>">' +
                             '</div>' +
                             '</div>'

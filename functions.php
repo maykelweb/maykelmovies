@@ -22,7 +22,7 @@ function displayPosts($query, $link){
                   <i class="fas fa-thumbs-up mr-1"></i> <span>'.$row['likes'].'</span> 
                 </a>
                 <span> '. $row['replies'] .' Replies </span>
-                <a class="post-share ml-2" href=""> Share </a>
+                <a class="post-share ml-2" onclick="share()"> Share </a>
               </div>
             </div>
         </div>
@@ -40,13 +40,13 @@ function timePassed($time) {
       
       //Calculate minutes/hours/days since post and appends text
       $timeDiff = round(($now - $time)/60); //Difference in minutes
-      $append = " minutes ago"; //
+      ($timeDiff == 1) ? $append = " minute ago" : $append = " minutes ago";
       if ($timeDiff > 60) {
         $timeDiff = round(($now - $time)/3600);//Difference in hours
-        $append = " hours ago";
+        ($timeDiff == 1) ? $append = " hour ago" : $append = " hours ago";
         if ($timeDiff > 24) {
           $timeDiff = round(($now - $time)/86400); //Difference in days
-          $append = " days ago";
+          ($timeDiff == 1) ? $append = " day ago" : $append = " days ago";
         }
       }
       

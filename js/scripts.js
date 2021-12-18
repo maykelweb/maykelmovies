@@ -1,9 +1,7 @@
-
-/*
-height: 40px;
-width: 40px;
-margin-top: -14px;
-*/
+//Share
+function share() {
+  alert("share code goes here");
+}
 
 //Discuss.php Show / Hide posts
 function togglePost(e) { 
@@ -34,8 +32,6 @@ function togglePost(e) {
     img[0].style.width = "40px";
     img[0].style.marginTop = "-7px";
   }
-
-  console.log(img);
 }
 
 function showReplyForm(e, username) {
@@ -78,9 +74,10 @@ function likePost(e, postID, userID) {
       if (e.classList.contains('postLiked')) { //Remove Like
         e.classList.remove('postLiked')
         e.children[1].textContent = parseInt(e.children[1].textContent) - 1; //Decrement like number
-
+        
+        console.log(e.children[1].textContent);
         //Check if likes = 0 and remove the 0 from showing
-        if (e.children[1].textContent = "0") {
+        if (e.children[1].textContent == "0") {
           e.children[1].textContent = "";
         }
       } else { //Add Like

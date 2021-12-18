@@ -229,7 +229,7 @@ body, html {
     font-weight: bold;
 }
 
-#thread .posts {
+#thread .card-text {
     font-size:1.2em;
 }
 
