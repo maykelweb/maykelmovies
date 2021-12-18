@@ -215,6 +215,10 @@ body, html {
     font-size: 0.9em;
 }
 
+.post-share i {
+    font-size: 1.5em;
+}
+
 #post .card-text {
     font-size: 1.2em;
     font-family: helvetica;
@@ -229,9 +233,20 @@ body, html {
     font-size:1.2em;
 }
 
+.reply-pic {
+    height: 40px;
+    width: 40px;
+    float: left;
+    margin-top: -7px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: lightgrey;
+}
+
 .post-invalid {
     font-size: 90%!important;
 }
+
 
 .hide-post {
     position: absolute;

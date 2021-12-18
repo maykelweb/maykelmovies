@@ -8,6 +8,7 @@ if (empty($_GET['id'])) {
 
 // Include config file
 require_once "config.php";
+require_once "functions.php";
 
 // Define variables and initialize with empty values
 $content = $replyTo = "";
@@ -54,13 +55,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $_SESSION["loggedin"] == true) {
         // Attempt to execute the prepared statement
         if(mysqli_stmt_execute($stmt)){
           
-        } else{
+        } else {
             echo '<div class="alert alert-danger"> Oops! Something went wrong. Please try again later. </div>';
         }
 
         // Close statement
         mysqli_stmt_close($stmt);
         header( "Location: {$_SERVER['REQUEST_URI']}", true, 303 );
+    }
+
+    //Increase post replies count 
+    $sql = "UPDATE posts SET replies = replies + 1 WHERE post_id = ?";
+
+    if ($stmt = mysqli_prepare($link, $sql)) {
+      // Bind variables to the prepared statement as parameters
+      mysqli_stmt_bind_param($stmt, "i", $param_postID);
+    
+      // Set parameters
+      $param_postID = trim($_GET['id']);
+    
+      // Attempt to execute the prepared statement
+      if (mysqli_stmt_execute($stmt)) {
+        //Success
+      } else { //Send back ajax error
+        echo '<div class="alert alert-danger"> Oops! Something went wrong. Please try again later. </div>';
+      }
+
+      // Close statement
+      mysqli_stmt_close($stmt);
     }
   }
 }
@@ -115,14 +137,13 @@ require_once "header.php"; ?>
                       <div class="card-body">
                           <div class="text-center d-inline-block">
                             <img class="profilePic mb-3" style="width:100px;height:100px;" src="uploads/u'. $post['user_id'] .'.jpg" onerror="this.onerror=null; this.src=\'uploads/default.jpg\'" alt="Profile picture" />
-                            <a href="profile.php?id='. $post['user_id'] .'">
-                              <p class="card-subtitle font-italic font-weight-bold post-username">'. $post['username'] . '</p>
+                            <a class="d-inline-block ml-2" href="profile.php?id='. $post['user_id'] .'">
+                              <p class="card-subtitle font-italic"> <b>'. $post['username'] .'</b> '.timePassed($post['time_created']).'</p>
                             </a>
                           </div>
                           <h1 class="mt-3">'. $post['title'] .' </h1>
                           <div class="card-text mt-3 mb-5">'. $post['content'] .'</div>
                           <a id="likeButton" class="float-left '.$postLiked.'" onclick="likePost(this, '.$post['post_id'].', '.$_SESSION['id'].')"> <i class="fas fa-thumbs-up mr-1"></i> <span>'.$likeCount.'</span> </a>
-                          <p class="card-subtitle float-right post-time">'. $post['time_created'] .'</h1>
                       </div>
                   </div>
                 ';
@@ -198,14 +219,13 @@ require_once "header.php"; ?>
                       <div class="card-body"> 
                         <a onClick="togglePost(this)" class="hide-post">  [ - ] </a>
                         <div class="text-center d-inline-block">
-                            <img class="profilePic mb-3"  src="uploads/u'. $row['user_id'] .'.jpg" onerror="this.onerror=null; this.src=\'uploads/default.jpg\'"  alt="Profile picture" />
-                            <a href="profile.php?id='. $row['user_id'] .'">
-                              <p class="card-subtitle font-italic font-weight-bold">'. $row['username'] . '</p>
+                            <img class="reply-pic mr-2"  src="uploads/u'. $row['user_id'] .'.jpg" onerror="this.onerror=null; this.src=\'uploads/default.jpg\'"  alt="Profile picture" />
+                            <a class="d-inline-block" href="profile.php?id='. $row['user_id'] .'">
+                              <p class="card-subtitle font-italic"><b>'. $row['username'] . '</b> '. timePassed($row['reply_time']).'</p>
                             </a>
                         </div>
                         <div class="card-text mt-3">'.$row['reply'] .' </div>
-                        <a id="likeButton" class="float-left mr-2 '.($row['like_user_id'] == $_SESSION['id'] ? "postLiked" : "").'" onclick="likeReply(this, '.$row['reply_id'].', '.$_SESSION['id'].', '.$id.')"> <i class="fas fa-thumbs-up mr-1"></i> <span>'.($row['reply_likes'] == 0 ? "" : $row['reply_likes']).'</span> </a>
-                        <p class="card-subtitle float-right mt-3 post-time">'. $row['reply_time'] .'</p>';
+                        <a id="likeButton" class="float-left mr-2 '.($row['like_user_id'] == $_SESSION['id'] ? "postLiked" : "").'" onclick="likeReply(this, '.$row['reply_id'].', '.$_SESSION['id'].', '.$id.')"> <i class="fas fa-thumbs-up mr-1"></i> <span>'.($row['reply_likes'] == 0 ? "" : $row['reply_likes']).'</span> </a>';
                         
                         if ($_SESSION["loggedin"] == true) { //Only show reply button if logged in
                           echo 
@@ -250,16 +270,15 @@ require_once "header.php"; ?>
                             '<div class="card-body">' + 
                               '<a onClick="togglePost(this)" class="hide-post"> [ - ] </a>' +
                               '<div class="text-center d-inline-block">' +
-                                '<img class="profilePic mb-3"  src="uploads/u<?php echo $row['user_id'] ?>.jpg" onerror="this.onerror=null; this.src=\'uploads/default.jpg\'" alt="Profile picture" />' +
-                                '<a href="profile.php?id=<?php echo $row['user_id'] ?>">' +
-                                  '<p class="card-subtitle font-italic font-weight-bold"> <?php echo $row['username'] ?> </p>' +
+                                '<img class="reply-pic mr-2"  src="uploads/u<?php echo $row['user_id'] ?>.jpg" onerror="this.onerror=null; this.src=\'uploads/default.jpg\'" alt="Profile picture" />' +
+                                '<a class="d-inline-block" href="profile.php?id=<?php echo $row['user_id'] ?>">' +
+                                  '<p class="card-subtitle font-italic"><b><?php echo $row['username'] ?></b> <?php echo timePassed($row['reply_time']) ?> </p>' +
                                 '</a>' +
                               '</div>' +
                               '<div class="card-text mt-3"> <?php echo $row['reply'] ?></div>' +
 
                               '<a id="likeButton" class="float-left mr-2 <?php echo ($row["like_user_id"] == $_SESSION["id"] ? "postLiked" : "")?>" onclick="likeReply(this, <?php echo $row["reply_id"] . ", " . $_SESSION["id"] . ", " . $id ?>)"> <i class="fas fa-thumbs-up mr-1"></i> <span> <?php echo ($row["reply_likes"] == 0 ? "" : $row["reply_likes"])?></span> </a>' +
 
-                              '<p class="card-subtitle float-right mt-3 post-time"> <?php echo $row['reply_time'] ?></p>' +
                               <?php if ($_SESSION["loggedin"] == true) { //Only show reply button if logged in ?>
                               '<a id="u<?php echo $row['reply_id'] ?>" class="replyButton" onclick="showReplyForm(this, \'<?php echo $row['username']?>\')">' +
                                 '<span class="float-left d-inline-block" style="font-size:0.9em;"> <i class="fas fa-comment mr-2"></i>Reply</span>' +

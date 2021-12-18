@@ -1,17 +1,41 @@
+
+/*
+height: 40px;
+width: 40px;
+margin-top: -14px;
+*/
+
 //Discuss.php Show / Hide posts
-//Get parent container and hide by changing height value
-function togglePost(e) {
+function togglePost(e) { 
+
+  //Get parent container and hide by changing height value
   let post = e.parentNode.parentNode.parentNode;
+  let img = post.getElementsByTagName('img');
 
   if (post.style.height != "50px") {
+    //Post hide
     post.style.height = "50px";
     e.textContent = "[ + ]";
     e.style.fontSize = "0.86em";
-  } else {
+
+    //Post profile image smaller to fit
+    img[0].style.height = "35px";
+    img[0].style.width = "35px";
+    img[0].style.marginTop = "-13px";
+    
+  } else { 
+    //Post show
     post.style.height = "auto";
     e.textContent = "[ - ]";
     e.style.fontSize = "1em";
+
+    //Post profile image back to normal
+    img[0].style.height = "40px";
+    img[0].style.width = "40px";
+    img[0].style.marginTop = "-7px";
   }
+
+  console.log(img);
 }
 
 function showReplyForm(e, username) {

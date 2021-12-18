@@ -14,12 +14,16 @@ function displayPosts($query, $link){
               <a class="d-inline-block" href="profile.php?id='. $row['user_id'] .'">
                 <p class="card-subtitle post-username d-inline-block"> Discussion by: '. $row['username'] .' '. timePassed($row['time_created']) .'  </p>
               </a>
-              <a href="discuss.php?id='. $row['post_id'] .'">
-                <p class="card-text">'. mb_strimwidth($row['content'], 0, 130, "...") .'</p>
+              <a class="card-text d-block" href="discuss.php?id='. $row['post_id'] .'">
+                '. mb_strimwidth($row['content'], 0, 130, "...") .'
+              </a>
+              <div class="mt-3">
+                <a id="likeButton" class="mr-2" onclick="likePost(this, '.$row['post_id'].', '.$_SESSION['id'].')"> 
+                  <i class="fas fa-thumbs-up mr-1"></i> <span>'.$row['likes'].'</span> 
                 </a>
-              <span> Replies: 27 </span><span>  </span> 
-              <a id="likeButton" class="float-left mr-2" onclick=""> <i class="fas fa-thumbs-up mr-1"></i> <span> 300</span> </a> 
-              <span>share</span>
+                <span> '. $row['replies'] .' Replies </span>
+                <a class="post-share ml-2" href=""> Share </a>
+              </div>
             </div>
         </div>
         ';
@@ -36,13 +40,13 @@ function timePassed($time) {
       
       //Calculate minutes/hours/days since post and appends text
       $timeDiff = round(($now - $time)/60); //Difference in minutes
-      $append = " Minutes ago"; //
+      $append = " minutes ago"; //
       if ($timeDiff > 60) {
         $timeDiff = round(($now - $time)/3600);//Difference in hours
-        $append = " Hours ago";
-        if ($timeDiff > 60) {
+        $append = " hours ago";
+        if ($timeDiff > 24) {
           $timeDiff = round(($now - $time)/86400); //Difference in days
-          $append = " Days ago";
+          $append = " days ago";
         }
       }
       
