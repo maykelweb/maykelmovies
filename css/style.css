@@ -202,8 +202,13 @@ body, html {
     background-color: rgb(161, 214, 235, 0.2)!important;
 }
 
+.post-title {
+    font-size:1.3em;
+    font-weight: bold;
+}
+
 .post-username {
-    font-size: 1.3em;
+    color: rgb(120, 124, 126);
 }
 
 .post-time { 

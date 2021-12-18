@@ -1,7 +1,7 @@
 <?php
 // Include config file
 require_once "config.php";
-require_once "displayPosts.php";
+require_once 'functions.php';
 
 // Initialize the session
 if (session_id() == "")
