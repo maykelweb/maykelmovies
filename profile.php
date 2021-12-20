@@ -1,7 +1,7 @@
 <?php 
 // Include config file
 require_once "config.php";
-require_once "displayPosts.php";
+require_once "functions.php";
 
 // Initialize the session &
 if (session_id() == "") {
@@ -17,7 +17,7 @@ if (!empty($_GET['id'])) {
 }
 
 //Upload image as profile picture
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
  $name=$_FILES['banner']['name']; 
  $extension=@end(explode('.',$name)); //Get the extension
@@ -109,10 +109,8 @@ require_once "header.php";
                 <div class="w-100">
 
                     <?php
-                    
-                    $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id WHERE posts.posted_by = $id ORDER BY posts.time_created DESC";
+                    $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id LEFT JOIN likes ON likes.like_post_id = posts.post_id WHERE posts.posted_by = $id ORDER BY posts.time_created DESC";
                     displayPosts($query, $link);
-                    
                     ?>           
                 </div>
 
