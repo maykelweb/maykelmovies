@@ -1,6 +1,13 @@
 <?php
-/* Database credentials. Assuming you are running MySQL
-server with default setting (user 'root' with no password) */
+/* Database credentials*/
+
+/* Siteground Access
+define('DB_SERVER', '35.214.100.93');
+define('DB_USERNAME', 'usd9ijvls5glr');
+define('DB_PASSWORD', 'Z0oUpJ9:Xi');
+define('DB_NAME', 'dbgy0mvpoedqdw');
+*/
+
 define('DB_SERVER', 'localhost');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', 'Z0oUpJ9:Xi');

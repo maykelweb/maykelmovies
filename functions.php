@@ -6,7 +6,7 @@ function displayPosts($query, $link){
     $result = mysqli_query($link, $query);
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) { //Echo all posts in HTML
         echo '
-        <div class="card posts">
+        <div class="card posts mb-2 mt-2">
             <div class="card-body">
               <a href="discuss.php?id='. $row['post_id'] .'" class="d-inline-block">
                 <h2 class="post-title">'. $row['title'] .'</h2>

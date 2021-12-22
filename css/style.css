@@ -1,349 +1,438 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
 * {
-    font-family: helvetica;
+  font-family: helvetica;
 }
 
 /* Error notification */
 .notification {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 10;
-    background: #41e441;
-    padding: 10px 20px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  background: #41e441;
+  padding: 10px 20px;
 }
 
-body, html {
-    padding: 0;
-    margin: 0;
-    font: 14px sans-serif;
+body,
+html {
+  padding: 0;
+  margin: 0;
+  font: 14px sans-serif;
 }
 
 /* Increase display flex cross compatibility */
 .d-flex {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 /*Navbar */
 #mainNav {
-    background-color: #0250c5!important;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: #0250c5 !important;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 .bgcolour-primary {
-    background-color: #00388c !important
+  background-color: #00388c !important;
 }
 .color-primary {
-    color: #0250c5!important;
+  color: #0250c5 !important;
 }
 
 #mainNav a {
-    font-size: 26px;
-    font-weight: bold;
-    font-style: italic;
-    position: relative;
+  font-size: 26px;
+  font-weight: bold;
+  font-style: italic;
+  position: relative;
 }
 
 .loginButton {
-    font-size: 16px!important;
-    position: relative;
+  font-size: 16px !important;
+  position: relative;
 }
 
 .loginButton::before {
-    content: "Or sign up";
-    position: absolute;
-    color: white;
-    top: 40px;
-    right: -15px;
-    font-size: 12px;
-    width: 100px;
-    display: block;
+  content: "Or sign up";
+  position: absolute;
+  color: white;
+  top: 40px;
+  right: -15px;
+  font-size: 12px;
+  width: 100px;
+  display: block;
 }
 .loginButton:hover::before {
-    text-decoration: underline!important;
+  text-decoration: underline !important;
 }
 
-
-.navUsername {
-    font-size:0.6em;
-    color:white;
-    display: inline-block;
-    margin: 0;
-    margin-right: 10px;
+.navbar-username {
+  font-size: 0.6em;
+  color: white;
+  display: inline-block;
+  margin: 0;
+  margin-right: 10px;
 }
 .profilePic {
-    width:  50px;
-    height: 50px;
-    border-radius: 50%;
-    display: inline-block;
-    object-fit: cover;
-    background-color: lightgrey;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: inline-block;
+  object-fit: cover;
+  background-color: lightgrey;
 }
 
 /* HOME PAGE */
 #search-container h4 {
-    font-size: 26px;
-    font-weight: bold;
-    text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+  text-align: center;
 }
 .search-box {
-    text-align: center;
+  text-align: center;
 }
 .search-box input {
-    width: 250px;
-    height: 50px;
-    border-radius: 30px;
-    background-color: white;
-    border: 2px solid black;
+  width: 250px;
+  height: 50px;
+  border-radius: 30px;
+  background-color: white;
+  border: 2px solid black;
 }
 
 #search-container h1 {
-    font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 /*Banner*/
 .banner {
-    font-size: 2.5em;
-    font-weight: bold;
-    font-family: Arial, Helvetica, sans-serif;
+  font-size: 2.5em;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Top Functions */
 #topFunctions .btn:hover {
-    background-color: #0250c5!important;
+  background-color: #0250c5 !important;
 }
 #topFunctions .btn {
-    background-color: #0250c5!important;
-    align-self: flex-end;
-    max-height: 33px;
-}
-
-/* Top Posts */
-#topPosts .posts h2 {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-#topPosts .posts {
-    border-color: none;
-    background-color: rgb(161, 214, 235, 0.2);
-}
-
-#topPosts .card-body {
-    padding: 1%!important;
+  background-color: #0250c5 !important;
+  align-self: flex-end;
+  max-height: 33px;
 }
 
 /* Create Post */
 #createPost {
-    text-align: center;
+  text-align: center;
 }
 #createPostButton {
-    font-size: 16px!important;
+  font-size: 16px !important;
 }
 
 #createPostForm {
-    margin: 0 auto;
-    text-align: left;
+  margin: 0 auto;
+  text-align: left;
 }
 
 /* Post Form Modal */
 .modal-dialog {
-    max-width: 600px!important;
+  max-width: 600px !important;
 }
 
 #posts {
-    color: black!important;
-    text-decoration: none!important;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    z-index: 1;
+  color: black !important;
+  text-decoration: none !important;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 1;
 }
 
 /*Post card info username*/
-.user-link { 
-    position: relative;
-    z-index: 2;
+.user-link {
+  position: relative;
+  z-index: 2;
 }
 
-
 .posts a {
-    cursor: pointer;
-    color: black!important;
-    text-decoration: none!important;
+  cursor: pointer;
+  color: black !important;
+  text-decoration: none !important;
 }
 
 .continue {
-    display: block;
-    text-align: center;
-    color: white !important;
-    margin: 0;
-    padding-bottom: 3px;
-    font-size: 1.4em;
-    background: #0250c5b0;
-    text-decoration: none!important;
+  display: block;
+  text-align: center;
+  color: white !important;
+  margin: 0;
+  padding-bottom: 3px;
+  font-size: 1.4em;
+  background: #0250c5b0;
+  text-decoration: none !important;
 }
 
 /* Discuss.php single page post */
 .post-container {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 #post {
-    margin-top: 100px;
+  margin-top: 100px;
 }
 
 .posts {
-    overflow: hidden;
-    border-color: none;
-    font-family: helvetica;
-    background-color: rgb(161, 214, 235, 0.2)!important;
+  overflow: hidden;
+  border-color: none;
+  font-family: helvetica;
+  background-color: rgb(161, 214, 235, 0.2) !important;
 }
 
 .post-title {
-    font-size:1.3em;
-    font-weight: bold;
+  font-size: 1.3em;
+  font-weight: bold;
 }
 
 .post-username {
-    color: rgb(120, 124, 126);
+  color: rgb(120, 124, 126);
 }
 
-.post-time { 
-    font-size: 0.9em;
+.post-time {
+  font-size: 0.9em;
 }
 
 .post-share i {
-    font-size: 1.5em;
+  font-size: 1.5em;
 }
 
 #post .card-text {
-    font-size: 1.2em;
-    font-family: helvetica;
+  font-size: 1.2em;
+  font-family: helvetica;
 }
 
-#thread .posts h2, #post .posts h2 {
-    font-size: 16px;
-    font-weight: bold;
+#thread .posts h2,
+#post .posts h2 {
+  font-size: 16px;
+  font-weight: bold;
 }
 
 #thread .card-text {
-    font-size:1.2em;
+  font-size: 1.2em;
 }
 
 .reply-pic {
-    height: 40px;
-    width: 40px;
-    float: left;
-    margin-top: -7px;
-    border-radius: 50%;
-    object-fit: cover;
-    background-color: lightgrey;
+  height: 40px;
+  width: 40px;
+  float: left;
+  margin-top: -7px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: lightgrey;
 }
 
 .post-invalid {
-    font-size: 90%!important;
+  font-size: 90% !important;
 }
 
-
 .hide-post {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 100%;
-    height: 20px;
-    background: none;
-    border: none;
-    text-align: right;
-    padding-right: 5px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 20px;
+  background: none;
+  border: none;
+  text-align: right;
+  padding-right: 5px;
 }
 
 #replyForm {
-    height: 0;
-    display:none;
-    
-    transition: height 2s ease-in;
+  height: 0;
+  display: none;
+
+  transition: height 2s ease-in;
 }
 
 .replyButton i {
-    -webkit-text-stroke: 1px black;
-    color: white;
-    font-size: 1.5em;
+  -webkit-text-stroke: 1px black;
+  color: white;
+  font-size: 1.5em;
 }
 
 #likeButton i {
-    -webkit-text-stroke: 1px black;
-    color: white;
-    font-size: 1.5em;
+  -webkit-text-stroke: 1px black;
+  color: white;
+  font-size: 1.5em;
 }
 
 .postLiked i {
-    color: #68b1ff !important
+  color: #68b1ff !important;
 }
 
 #closeReply {
-        background: none;
-        color: black;
-        border: none;
-        padding: 0;
-        font: inherit;
-        font-size: 2em;
-        cursor: pointer;
-        outline: inherit;
-        margin-left: auto;
+  background: none;
+  color: black;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 2em;
+  cursor: pointer;
+  outline: inherit;
+  margin-left: auto;
 }
 
 /* Login Page */
-.wrapper{ 
-    width: 360px;
-    padding: 20px;
-    border-radius: 3px;
-    background: #fff;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+.wrapper {
+  width: 360px;
+  padding: 20px;
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 .background {
-    width: 100%;
-    min-height: 100vh;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    padding: 15px;
-    background: #0250c5;
-    background: -webkit-linear-gradient(bottom, #0250c5, #d43f8d);
-    background: -o-linear-gradient(bottom, #0250c5, #d43f8d);
-    background: -moz-linear-gradient(bottom, #0250c5, #d43f8d);
-    background: linear-gradient(bottom, #0250c5, #d43f8d);
-    position: relative;
-    z-index: 1;
+  width: 100%;
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  background: #0250c5;
+  background: -webkit-linear-gradient(bottom, #0250c5, #d43f8d);
+  background: -o-linear-gradient(bottom, #0250c5, #d43f8d);
+  background: -moz-linear-gradient(bottom, #0250c5, #d43f8d);
+  background: linear-gradient(bottom, #0250c5, #d43f8d);
+  position: relative;
+  z-index: 1;
 }
 .background::before {
-    content: "";
-    display: block;
-    position: absolute;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background-image: url('./images/login-background.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url("./images/login-background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+/* TInyMC */
+.tox-toolbar--scrolling {
+  flex-wrap: wrap !important;
+}
+.tox-toolbar__group {
+  flex-grow: 1;
 }
 
 /* Hide branding on text editor */
 .tox-statusbar__branding {
-    display: none;
+  display: none;
 }
 
-/* Bootstrap Popup Alerts */ 
+/* Bootstrap Popup Alerts */
 .alert {
-    margin: 0!important;
+  margin: 0 !important;
+}
+
+/* Discussion Boards/Main Pages */
+#board-title {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+/* Search Bar and Create Post Action Bar */
+#actionBar {
+  font-family: "Open Sans", sans-serif;
+  width: 100%;
+  display: none;
+  padding: 0px 20px 10px 20px;
+  background: #0250c5;
+}
+
+#createPostButton {
+    width: 109px;
+}
+
+.searchBox {
+  flex-grow: 1;
+  height: 36px!important;
+  padding-left: 20px;
+  margin-right: 5px;
+  outline: none;
+  color: #5c5c5c;
+  border: none;
+  border-radius: 20px;
+  max-width: 300px;
+  width: 250px;
+}
+
+.searchBox:focus {
+  color: black;
+}
+
+.searchButton {
+  width: 40px;
+  height: 36px;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  font-size: 20px;
+  background: #0250c5;
+  border: none;    
+  margin-right: 5px;
+}
+
+.navbar-custom-toggler {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: middle;
+    content: "";
+    background: no-repeat center center;
+    background-image: none;
+    background-size: auto;
+    background-size: 100% 100%;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+/* Mobile CSS */
+@media (max-width:1200px) {
+  #mainNav {
+      justify-content: normal;
+  }
+}
+
+/*Navbar action bar*/
+@media (max-width:606px) {
+    .searchBox {
+      width: auto;
+      max-width: 250px;
+    }
+}
+
+
+@media (max-width:515px) {
+  #mainNav {
+      padding: 0 20px!important;
+  }
+
+  #nav-search {
+    display: none;
+  }
+
+  #actionBar {
+      display: flex;
+  }
+
+  .searchBox {
+    padding-left: 10px;
+    width: 10px; /* Fixes searchbox being too big */
+  }
 }

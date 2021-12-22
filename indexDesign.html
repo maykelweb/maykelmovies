@@ -7,11 +7,12 @@
     <meta name="description" content="Discuss movies and films" />
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Movie Discussion Site</title>
 </head>
 <body>
     <header>
-        <nav id="mainNav" class="navbar navbar-expand-md navbar-dark p-4">
+        <nav id="mainNav" class="navbar navbar-expand-lg navbar-dark p-4">
             <a class="navbar-brand pr-4" href="index.php">MaykelMovies</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
@@ -35,6 +36,12 @@
                     <a class="nav-link" href="reviews.php">Reviews</a>
                 </li>
               </ul>
+
+              <input type="text" class="searchBox" placeholder="Search...">
+            <button type="submit" class="searchButton">
+              <i class="fa fa-search"></i>
+            </button>
+
               <a href="" class="d-flex" style="align-items: center;">
                 <p class="d-inline-block m-0 mr-3" style="
                   font-size:0.7em;
@@ -46,28 +53,21 @@
           </nav>
     </header>
 
-    <div class="container">
-      <div id="search-container">
-        <h1 class="text-center mt-5 mb-2 color-primary font-weight-bold"> SEARCH </h1>
-        <div class="search-box">
-          <input type="text">
-        </div>
-      </div>
-    </div>
+    <section id="topPosts">
+      <div style="width:80%;margin:0 auto;margin-top:50px;">
 
-    <!-- Top Functions -->
+        <!-- Top Functions -->
     <section id="topFunctions">
-      <div class="container d-flex">
-        <button class="btn text-white mr-1">Top Posts</button>
+      <div class="d-flex">
+        <i class="fas fa-bars mr-2" style="align-self: center;font-size:26px;"></i>
+        <i class="fas fa-th-large mr-2" style="align-self: center;font-size:26px;"></i>
+        <a class="btn text-white mr-1">Top Posts</a>
         <button class="btn text-white">Newest</button>
-        <h2 class="text-center banner mt-5 color-primary d-inline-block ml-auto">JOIN THE DISCUSSION</h2>
         <button id="createPostButton" class="btn btn-primary ml-auto" onclick="showCreatePost()"> Create New Discussion </button>
         </div>
     </section>
-
-    <!-- Top Posts -->
-    <section id="topPosts">
-      <div class="container">
+    
+    <!-- display Posts -->
         <div class="card posts">
           <a href="#">
           <div class="card-body"> 
@@ -79,17 +79,28 @@
           </div>
           </a>
         </div>
-        <div class="card posts">
-          <a href="#">
-          <div class="card-body"> 
-              <p class="card-subtitle float-right">Posted: an hour ago</p>
-              <div style="clear:right;"></div>
-              <p class="card-subtitle float-right font-italic"> Anonymousity2 </p>
-              <h2> Next by Nicholas Cage </h2>
-              <p class="card-text mt-3"> Lorem ipsum dolor sit amet consectetur adipisicing...</P>
+        
+        <div class="card posts mb-2 mt-2">
+          <div class="card-body">
+            <a href="discuss.php?id='. $row['post_id'] .'" class="d-inline-block">
+              <h2 class="post-title"> Dexter </h2>
+            </a>
+            <a class="d-inline-block" href="profile.php?id='. $row['user_id'] .'">
+              <p class="card-subtitle post-username d-inline-block"> Discussion by: Sombie 3 hours ago'  </p>
+            </a>
+            <a class="card-text d-block" href="discuss.php?id='. $row['post_id'] .'">
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Debitis fuga quisquam vero magnam enim quia praesentium, nobis minus incidunt laborum?
+            </a>
+            <div class="mt-3">
+              <a id="likeButton" class="mr-2"> 
+                <i class="fas fa-thumbs-up mr-1"></i> <span>5</span> 
+              </a>
+              <span> 20 Replies </span>
+              <a class="post-share ml-2" onclick="share()"> Share </a>
+            </div>
           </div>
-          </a>
-        </div>
+      </div>
+
         <div class="card posts">
           <a href="#">
           <div class="card-body"> 
@@ -103,12 +114,6 @@
         </div>
         
         <a class="continue" href="#Action"> Continue Reading </a>
-      </div>
-    </section>
-
-    <section id="Action">
-      <div style="height:100vh;">
-
       </div>
     </section>
     
