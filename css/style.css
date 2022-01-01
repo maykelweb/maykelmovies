@@ -4,6 +4,12 @@
   font-family: helvetica;
 }
 
+
+/* Bootstrap container width */ 
+.container, .container-lg, .container-md, .container-sm, .container-xl {
+  max-width: 800px!important;
+}
+
 /* Error notification */
 .notification {
   position: absolute;
@@ -19,6 +25,10 @@ html {
   padding: 0;
   margin: 0;
   font: 14px sans-serif;
+}
+
+body {
+  background-color: #fafafa;
 }
 
 /* Increase display flex cross compatibility */
@@ -185,12 +195,19 @@ html {
   overflow: hidden;
   border-color: none;
   font-family: helvetica;
-  background-color: rgb(161, 214, 235, 0.2) !important;
+  background-color: #fff !important;
 }
 
 .post-title {
   font-size: 1.3em;
   font-weight: bold;
+}
+
+.post-image {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .post-username {

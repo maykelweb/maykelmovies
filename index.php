@@ -51,6 +51,31 @@ require_once "header.php";
     <section id="topPosts" class="mt-1">
       <div class="container">
 
+      <!-- Display Example -->
+      <div class="card posts mb-2 mt-2">
+        <div class="card-image">
+          <img class="post-image" src="https://image.api.playstation.com/vulcan/img/rnd/202011/0714/vuF88yWPSnDfmFJVTyNJpVwW.png">
+        </div>
+            <div class="card-body">
+              <a href="discuss.php?id=12" class="d-inline-block">
+                <h2 class="post-title">Spiderman - no way home</h2>
+              </a>
+              <a class="d-inline-block" href="profile.php?id=2">
+                <p class="card-subtitle post-username d-inline-block"> Discussion by: admin 32 days ago  </p>
+              </a>
+              <a class="card-text d-block" href="discuss.php?id=12">
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus animi quibusdam unde alias quaerat, magni quasi accusantium...
+              </a>
+              <div class="mt-3">
+                <a id="likeButton" class="mr-2 " onclick="likePost(this, 12, 1)"> 
+                  <i class="fas fa-thumbs-up mr-1"></i> <span>2</span> 
+                </a>
+                <span> 0 Replies </span>
+                <a class="post-share ml-2" onclick="share()"> Share </a>
+              </div>
+            </div>
+        </div>
+
       <?php
         //Display Top 3 Posts
         $query = "SELECT * FROM posts LEFT JOIN users ON posts.posted_by = users.user_id LEFT JOIN likes ON likes.like_post_id = posts.post_id ORDER BY likes DESC LIMIT 3";

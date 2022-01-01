@@ -65,13 +65,11 @@ require_once "header.php";
 
     <section>
       <div class="container">
+        <h1 id="board-title"> Movie Discussion </h1>
 
         <?php if ($_SESSION["loggedin"] == true) { //If logged in, show create post button and form ?>
         <!-- Create Post Button -->
-        <div id="createPost" class="mt-5">
-          <button id="createPostButton" class="btn btn-primary float-right" data-toggle="modal" data-target="#newPost"> Create New Discussion </button>
-          <div style="clear:right;"></div>
-          
+        <div id="createPost" class="mt-5 mb-2">
           <!-- Create Post Modal -->
           <div class="modal fade" id="newPost" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
